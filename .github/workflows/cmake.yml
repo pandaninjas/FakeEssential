@@ -29,10 +29,24 @@ jobs:
     - name: Install vcpkg (Windows))
       run: git clone https://github.com/Microsoft/vcpkg.git && .\vcpkg\bootstrap-vcpkg.bat
       if: runner.os == 'Windows'
-      
+    
+    - name: Cache
+      id: restore-cache
+      uses: actions/cache@v2
+      with:
+        # Assuming that vcpkg is installed in `~/vcpkg`
+        # Assuming that the build directory is `./build`
+        path: |
+          ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+          ${{ env.LOCALAPPDATA }}\vcpkg\archives
+          ${{ env.APPDATA }}\vcpkg\archives
+        key: ${{ runner.os }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}
+        restore-keys: |
+          ${{ runner.os }}-${{ env.BUILD_TYPE }}
+          
     - name: Install depdencies (Windows)
       run: vcpkg install --triplet x64-windows curl
-      if: runner.os == 'Windows'
+      if: runner.os == 'Windows' && steps.restore-cache.outputs.cache-hit != 'true'
       
     - name: Configure CMake (Non-Windows)
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
