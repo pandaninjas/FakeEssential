@@ -22,8 +22,4 @@ add_executable(fake_essentials
         ${DISCORD_CPP_SOURCES} json/json.hpp utils.cpp utils.h argparse.cpp argparse.h)
 
 target_link_libraries(fake_essentials discord_game_sdk)
-IF (WIN32)
-  target_link_libraries( fake_essentials PRIVATE CURL::libcurl )
-ELSE()
-  target_link_libraries( fake_essentials CURL::libcurl )
-ENDIF()
+target_link_libraries( fake_essentials PRIVATE CURL::libcurl )
