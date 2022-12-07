@@ -12,7 +12,7 @@ find_package( CURL REQUIRED )
 add_library( discord_game_sdk SHARED IMPORTED )
 set_target_properties( discord_game_sdk PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/discord_game_sdk${CMAKE_SHARED_LIBRARY_SUFFIX} )
 
-FILE(GLOB DISCORD_CPP_SOURCES discord/*)
+FILE(GLOB DISCORD_CPP_SOURCES ${CMAKE_SOURCE_DIR}/discord/*)
 add_executable(fake_essentials
         main.cpp
         ${DISCORD_CPP_SOURCES} json/json.hpp utils.cpp utils.h argparse.cpp argparse.h)
