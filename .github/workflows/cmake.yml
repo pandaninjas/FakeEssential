@@ -31,7 +31,7 @@ jobs:
       if: runner.os == 'Windows'
       
     - name: Install depdencies (Windows)
-      run: vcpkg install curl
+      run: vcpkg install --triplet x64-windows curl
       if: runner.os == 'Windows'
       
     - name: Configure CMake (Non-Windows)
