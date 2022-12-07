@@ -65,12 +65,12 @@ public:
 
     Event<int64_t> OnLobbyUpdate;
     Event<int64_t, uint32_t> OnLobbyDelete;
-    Event<int64_t, std::int64_t> OnMemberConnect;
-    Event<int64_t, std::int64_t> OnMemberUpdate;
-    Event<int64_t, std::int64_t> OnMemberDisconnect;
-    Event<int64_t, std::int64_t, uint8_t*, uint32_t> OnLobbyMessage;
-    Event<int64_t, std::int64_t, bool> OnSpeaking;
-    Event<int64_t, std::int64_t, uint8_t, std::uint8_t*, uint32_t> OnNetworkMessage;
+    Event<int64_t, int64_t> OnMemberConnect;
+    Event<int64_t, int64_t> OnMemberUpdate;
+    Event<int64_t, int64_t> OnMemberDisconnect;
+    Event<int64_t, int64_t, uint8_t*, uint32_t> OnLobbyMessage;
+    Event<int64_t, int64_t, bool> OnSpeaking;
+    Event<int64_t, int64_t, uint8_t, uint8_t*, uint32_t> OnNetworkMessage;
 
 private:
     friend class Core;

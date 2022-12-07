@@ -48,8 +48,8 @@ void StorageManager::ReadAsync(char const* name,
 
 void StorageManager::ReadAsyncPartial(
   char const* name,
-  std::uint64_t offset,
-  std::uint64_t length,
+  uint64_t offset,
+  uint64_t length,
   std::function<void(Result, uint8_t*, uint32_t)> callback)
 {
     static auto wrapper =

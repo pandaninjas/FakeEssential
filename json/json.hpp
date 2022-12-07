@@ -2856,7 +2856,7 @@ value with the default value for a given type
 
 @since version 1.0.0
 */
-            enum class value_t : std::uint8_t
+            enum class value_t : uint8_t
             {
                 null,             ///< null value
                 object,           ///< object (unordered set of name/value pairs)
@@ -2889,7 +2889,7 @@ Returns an ordering that is similar to Python:
             inline bool operator<(const value_t lhs, const value_t rhs) noexcept
 #endif
             {
-                static constexpr std::array<std::uint8_t, 9> order = {{
+                static constexpr std::array<uint8_t, 9> order = {{
                                                                               0 /* null */, 3 /* object */, 4 /* array */, 5 /* string */,
                                                                               1 /* boolean */, 2 /* integer */, 2 /* unsigned */, 2 /* float */,
                                                                               6 /* binary */
@@ -3386,13 +3386,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
         std::map,
                 template<typename U, typename... Args> class ArrayType = std::vector,
                 class StringType = std::string, class BooleanType = bool,
-                class NumberIntegerType = std::int64_t,
-                class NumberUnsignedType = std::uint64_t,
+                class NumberIntegerType = int64_t,
+                class NumberUnsignedType = uint64_t,
                 class NumberFloatType = double,
                 template<typename U> class AllocatorType = std::allocator,
                 template<typename T, typename SFINAE = void> class JSONSerializer =
                 adl_serializer,
-                class BinaryType = std::vector<std::uint8_t>, // cppcheck-suppress syntaxError
+                class BinaryType = std::vector<uint8_t>, // cppcheck-suppress syntaxError
                 class CustomBaseClass = void>
         class basic_json;
 
@@ -5824,7 +5824,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
         {
         public:
             using container_type = BinaryType;
-            using subtype_type = std::uint64_t;
+            using subtype_type = uint64_t;
 
             /// @sa https://json.nlohmann.me/api/byte_container_with_subtype/byte_container_with_subtype/
             byte_container_with_subtype() noexcept(noexcept(container_type()))
@@ -6028,7 +6028,7 @@ null, 0, 0U, and false, etc.
                         seed = combine(seed, static_cast<std::size_t>(j.get_binary().subtype()));
                         for (const auto byte : j.get_binary())
                         {
-                            seed = combine(seed, std::hash<std::uint8_t> {}(byte));
+                            seed = combine(seed, std::hash<uint8_t> {}(byte));
                         }
                         return seed;
                     }
@@ -9245,8 +9245,8 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
     */
                 bool parse_bson_internal()
                 {
-                    std::int32_t document_size{};
-                    get_number<std::int32_t, true>(input_format_t::bson, document_size);
+                    int32_t document_size{};
+                    get_number<int32_t, true>(input_format_t::bson, document_size);
 
                     if (JSON_HEDLEY_UNLIKELY(!sax->start_object(static_cast<std::size_t>(-1))))
                     {
@@ -9330,8 +9330,8 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                     }
 
                     // All BSON binary values have a subtype
-                    std::uint8_t subtype{};
-                    get_number<std::uint8_t>(input_format_t::bson, subtype);
+                    uint8_t subtype{};
+                    get_number<uint8_t>(input_format_t::bson, subtype);
                     result.set_subtype(subtype);
 
                     return get_binary(input_format_t::bson, len, result);
@@ -9360,9 +9360,9 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x02: // string
                         {
-                            std::int32_t len{};
+                            int32_t len{};
                             string_t value;
-                            return get_number<std::int32_t, true>(input_format_t::bson, len) && get_bson_string(len, value) && sax->string(value);
+                            return get_number<int32_t, true>(input_format_t::bson, len) && get_bson_string(len, value) && sax->string(value);
                         }
 
                         case 0x03: // object
@@ -9377,9 +9377,9 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x05: // binary
                         {
-                            std::int32_t len{};
+                            int32_t len{};
                             binary_t value;
-                            return get_number<std::int32_t, true>(input_format_t::bson, len) && get_bson_binary(len, value) && sax->binary(value);
+                            return get_number<int32_t, true>(input_format_t::bson, len) && get_bson_binary(len, value) && sax->binary(value);
                         }
 
                         case 0x08: // boolean
@@ -9394,14 +9394,14 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x10: // int32
                         {
-                            std::int32_t value{};
-                            return get_number<std::int32_t, true>(input_format_t::bson, value) && sax->number_integer(value);
+                            int32_t value{};
+                            return get_number<int32_t, true>(input_format_t::bson, value) && sax->number_integer(value);
                         }
 
                         case 0x12: // int64
                         {
-                            std::int64_t value{};
-                            return get_number<std::int64_t, true>(input_format_t::bson, value) && sax->number_integer(value);
+                            int64_t value{};
+                            return get_number<int64_t, true>(input_format_t::bson, value) && sax->number_integer(value);
                         }
 
                         default: // anything else not supported (yet)
@@ -9467,8 +9467,8 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
     */
                 bool parse_bson_array()
                 {
-                    std::int32_t document_size{};
-                    get_number<std::int32_t, true>(input_format_t::bson, document_size);
+                    int32_t document_size{};
+                    get_number<int32_t, true>(input_format_t::bson, document_size);
 
                     if (JSON_HEDLEY_UNLIKELY(!sax->start_array(static_cast<std::size_t>(-1))))
                     {
@@ -9533,7 +9533,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x18: // Unsigned integer (one-byte uint8_t follows)
                         {
-                            std::uint8_t number{};
+                            uint8_t number{};
                             return get_number(input_format_t::cbor, number) && sax->number_unsigned(number);
                         }
 
@@ -9551,7 +9551,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x1B: // Unsigned integer (eight-byte uint64_t follows)
                         {
-                            std::uint64_t number{};
+                            uint64_t number{};
                             return get_number(input_format_t::cbor, number) && sax->number_unsigned(number);
                         }
 
@@ -9584,7 +9584,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x38: // Negative integer (one-byte uint8_t follows)
                         {
-                            std::uint8_t number{};
+                            uint8_t number{};
                             return get_number(input_format_t::cbor, number) && sax->number_integer(static_cast<number_integer_t>(-1) - number);
                         }
 
@@ -9602,7 +9602,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x3B: // Negative integer -1-n (eight-byte uint64_t follows)
                         {
-                            std::uint64_t number{};
+                            uint64_t number{};
                             return get_number(input_format_t::cbor, number) && sax->number_integer(static_cast<number_integer_t>(-1)
                                                                                                    - static_cast<number_integer_t>(number));
                         }
@@ -9707,7 +9707,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x98: // array (one-byte uint8_t for n follows)
                         {
-                            std::uint8_t len{};
+                            uint8_t len{};
                             return get_number(input_format_t::cbor, len) && get_cbor_array(static_cast<std::size_t>(len), tag_handler);
                         }
 
@@ -9725,7 +9725,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x9B: // array (eight-byte uint64_t for n follow)
                         {
-                            std::uint64_t len{};
+                            uint64_t len{};
                             return get_number(input_format_t::cbor, len) && get_cbor_array(conditional_static_cast<std::size_t>(len), tag_handler);
                         }
 
@@ -9761,7 +9761,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0xB8: // map (one-byte uint8_t for n follows)
                         {
-                            std::uint8_t len{};
+                            uint8_t len{};
                             return get_number(input_format_t::cbor, len) && get_cbor_object(static_cast<std::size_t>(len), tag_handler);
                         }
 
@@ -9779,7 +9779,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0xBB: // map (eight-byte uint64_t for n follow)
                         {
-                            std::uint64_t len{};
+                            uint64_t len{};
                             return get_number(input_format_t::cbor, len) && get_cbor_object(conditional_static_cast<std::size_t>(len), tag_handler);
                         }
 
@@ -9822,7 +9822,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                     {
                                         case 0xD8:
                                         {
-                                            std::uint8_t subtype_to_ignore{};
+                                            uint8_t subtype_to_ignore{};
                                             get_number(input_format_t::cbor, subtype_to_ignore);
                                             break;
                                         }
@@ -9840,7 +9840,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                         }
                                         case 0xDB:
                                         {
-                                            std::uint64_t subtype_to_ignore{};
+                                            uint64_t subtype_to_ignore{};
                                             get_number(input_format_t::cbor, subtype_to_ignore);
                                             break;
                                         }
@@ -9858,7 +9858,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                     {
                                         case 0xD8:
                                         {
-                                            std::uint8_t subtype{};
+                                            uint8_t subtype{};
                                             get_number(input_format_t::cbor, subtype);
                                             b.set_subtype(detail::conditional_static_cast<typename binary_t::subtype_type>(subtype));
                                             break;
@@ -9879,7 +9879,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                         }
                                         case 0xDB:
                                         {
-                                            std::uint64_t subtype{};
+                                            uint64_t subtype{};
                                             get_number(input_format_t::cbor, subtype);
                                             b.set_subtype(detail::conditional_static_cast<typename binary_t::subtype_type>(subtype));
                                             break;
@@ -10026,7 +10026,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x78: // UTF-8 string (one-byte uint8_t for n follows)
                         {
-                            std::uint8_t len{};
+                            uint8_t len{};
                             return get_number(input_format_t::cbor, len) && get_string(input_format_t::cbor, len, result);
                         }
 
@@ -10044,7 +10044,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x7B: // UTF-8 string (eight-byte uint64_t for n follow)
                         {
-                            std::uint64_t len{};
+                            uint64_t len{};
                             return get_number(input_format_t::cbor, len) && get_string(input_format_t::cbor, len, result);
                         }
 
@@ -10122,7 +10122,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x58: // Binary data (one-byte uint8_t for n follows)
                         {
-                            std::uint8_t len{};
+                            uint8_t len{};
                             return get_number(input_format_t::cbor, len) &&
                                    get_binary(input_format_t::cbor, len, result);
                         }
@@ -10143,7 +10143,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0x5B: // Binary data (eight-byte uint64_t for n follow)
                         {
-                            std::uint64_t len{};
+                            uint64_t len{};
                             return get_number(input_format_t::cbor, len) &&
                                    get_binary(input_format_t::cbor, len, result);
                         }
@@ -10528,7 +10528,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0xCC: // uint 8
                         {
-                            std::uint8_t number{};
+                            uint8_t number{};
                             return get_number(input_format_t::msgpack, number) && sax->number_unsigned(number);
                         }
 
@@ -10546,7 +10546,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0xCF: // uint 64
                         {
-                            std::uint64_t number{};
+                            uint64_t number{};
                             return get_number(input_format_t::msgpack, number) && sax->number_unsigned(number);
                         }
 
@@ -10564,13 +10564,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0xD2: // int 32
                         {
-                            std::int32_t number{};
+                            int32_t number{};
                             return get_number(input_format_t::msgpack, number) && sax->number_integer(number);
                         }
 
                         case 0xD3: // int 64
                         {
-                            std::int64_t number{};
+                            int64_t number{};
                             return get_number(input_format_t::msgpack, number) && sax->number_integer(number);
                         }
 
@@ -10700,7 +10700,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0xD9: // str 8
                         {
-                            std::uint8_t len{};
+                            uint8_t len{};
                             return get_number(input_format_t::msgpack, len) && get_string(input_format_t::msgpack, len, result);
                         }
 
@@ -10740,7 +10740,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                     // helper function to set the subtype
                     auto assign_and_return_true = [&result](std::int8_t subtype)
                     {
-                        result.set_subtype(static_cast<std::uint8_t>(subtype));
+                        result.set_subtype(static_cast<uint8_t>(subtype));
                         return true;
                     };
 
@@ -10748,7 +10748,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                     {
                         case 0xC4: // bin 8
                         {
-                            std::uint8_t len{};
+                            uint8_t len{};
                             return get_number(input_format_t::msgpack, len) &&
                                    get_binary(input_format_t::msgpack, len, result);
                         }
@@ -10769,7 +10769,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 0xC7: // ext 8
                         {
-                            std::uint8_t len{};
+                            uint8_t len{};
                             std::int8_t subtype{};
                             return get_number(input_format_t::msgpack, len) &&
                                    get_number(input_format_t::msgpack, subtype) &&
@@ -10940,7 +10940,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                     {
                         case 'U':
                         {
-                            std::uint8_t len{};
+                            uint8_t len{};
                             return get_number(input_format, len) && get_string(input_format, len, result);
                         }
 
@@ -10958,13 +10958,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 'l':
                         {
-                            std::int32_t len{};
+                            int32_t len{};
                             return get_number(input_format, len) && get_string(input_format, len, result);
                         }
 
                         case 'L':
                         {
-                            std::int64_t len{};
+                            int64_t len{};
                             return get_number(input_format, len) && get_string(input_format, len, result);
                         }
 
@@ -10994,7 +10994,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             {
                                 break;
                             }
-                            std::uint64_t len{};
+                            uint64_t len{};
                             return get_number(input_format, len) && get_string(input_format, len, result);
                         }
 
@@ -11095,7 +11095,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                     {
                         case 'U':
                         {
-                            std::uint8_t number{};
+                            uint8_t number{};
                             if (JSON_HEDLEY_UNLIKELY(!get_number(input_format, number)))
                             {
                                 return false;
@@ -11138,7 +11138,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 'l':
                         {
-                            std::int32_t number{};
+                            int32_t number{};
                             if (JSON_HEDLEY_UNLIKELY(!get_number(input_format, number)))
                             {
                                 return false;
@@ -11154,7 +11154,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 'L':
                         {
-                            std::int64_t number{};
+                            int64_t number{};
                             if (JSON_HEDLEY_UNLIKELY(!get_number(input_format, number)))
                             {
                                 return false;
@@ -11209,7 +11209,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             {
                                 break;
                             }
-                            std::uint64_t number{};
+                            uint64_t number{};
                             if (JSON_HEDLEY_UNLIKELY(!get_number(input_format, number)))
                             {
                                 return false;
@@ -11391,7 +11391,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 'U':
                         {
-                            std::uint8_t number{};
+                            uint8_t number{};
                             return get_number(input_format, number) && sax->number_unsigned(number);
                         }
 
@@ -11409,13 +11409,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case 'l':
                         {
-                            std::int32_t number{};
+                            int32_t number{};
                             return get_number(input_format, number) && sax->number_integer(number);
                         }
 
                         case 'L':
                         {
-                            std::int64_t number{};
+                            int64_t number{};
                             return get_number(input_format, number) && sax->number_integer(number);
                         }
 
@@ -11445,7 +11445,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             {
                                 break;
                             }
-                            std::uint64_t number{};
+                            uint64_t number{};
                             return get_number(input_format, number) && sax->number_unsigned(number);
                         }
 
@@ -11866,7 +11866,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                 bool get_number(const input_format_t format, NumberType& result)
                 {
                     // step 1: read input into array with system's byte order
-                    std::array<std::uint8_t, sizeof(NumberType)> vec{};
+                    std::array<uint8_t, sizeof(NumberType)> vec{};
                     for (std::size_t i = 0; i < sizeof(NumberType); ++i)
                     {
                         get();
@@ -11878,11 +11878,11 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         // reverse byte order prior to conversion if necessary
                         if (is_little_endian != (InputIsLittleEndian || format == input_format_t::bjdata))
                         {
-                            vec[sizeof(NumberType) - i - 1] = static_cast<std::uint8_t>(current);
+                            vec[sizeof(NumberType) - i - 1] = static_cast<uint8_t>(current);
                         }
                         else
                         {
-                            vec[i] = static_cast<std::uint8_t>(current); // LCOV_EXCL_LINE
+                            vec[i] = static_cast<uint8_t>(current); // LCOV_EXCL_LINE
                         }
                     }
 
@@ -11952,7 +11952,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             success = false;
                             break;
                         }
-                        result.push_back(static_cast<std::uint8_t>(current));
+                        result.push_back(static_cast<uint8_t>(current));
                     }
                     return success;
                 }
@@ -12133,7 +12133,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 // parser //
 ////////////
 
-            enum class parse_event_t : std::uint8_t
+            enum class parse_event_t : uint8_t
             {
                 /// the parser read `{` and started to process a JSON object
                 object_start,
@@ -15066,12 +15066,12 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 // code from the value_t::number_unsigned case here.
                                 if (j.m_value.number_integer <= 0x17)
                                 {
-                                    write_number(static_cast<std::uint8_t>(j.m_value.number_integer));
+                                    write_number(static_cast<uint8_t>(j.m_value.number_integer));
                                 }
-                                else if (j.m_value.number_integer <= (std::numeric_limits<std::uint8_t>::max)())
+                                else if (j.m_value.number_integer <= (std::numeric_limits<uint8_t>::max)())
                                 {
                                     oa->write_character(to_char_type(0x18));
-                                    write_number(static_cast<std::uint8_t>(j.m_value.number_integer));
+                                    write_number(static_cast<uint8_t>(j.m_value.number_integer));
                                 }
                                 else if (j.m_value.number_integer <= (std::numeric_limits<std::uint16_t>::max)())
                                 {
@@ -15086,7 +15086,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 else
                                 {
                                     oa->write_character(to_char_type(0x1B));
-                                    write_number(static_cast<std::uint64_t>(j.m_value.number_integer));
+                                    write_number(static_cast<uint64_t>(j.m_value.number_integer));
                                 }
                             }
                             else
@@ -15096,12 +15096,12 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 const auto positive_number = -1 - j.m_value.number_integer;
                                 if (j.m_value.number_integer >= -24)
                                 {
-                                    write_number(static_cast<std::uint8_t>(0x20 + positive_number));
+                                    write_number(static_cast<uint8_t>(0x20 + positive_number));
                                 }
-                                else if (positive_number <= (std::numeric_limits<std::uint8_t>::max)())
+                                else if (positive_number <= (std::numeric_limits<uint8_t>::max)())
                                 {
                                     oa->write_character(to_char_type(0x38));
-                                    write_number(static_cast<std::uint8_t>(positive_number));
+                                    write_number(static_cast<uint8_t>(positive_number));
                                 }
                                 else if (positive_number <= (std::numeric_limits<std::uint16_t>::max)())
                                 {
@@ -15116,7 +15116,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 else
                                 {
                                     oa->write_character(to_char_type(0x3B));
-                                    write_number(static_cast<std::uint64_t>(positive_number));
+                                    write_number(static_cast<uint64_t>(positive_number));
                                 }
                             }
                             break;
@@ -15126,12 +15126,12 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         {
                             if (j.m_value.number_unsigned <= 0x17)
                             {
-                                write_number(static_cast<std::uint8_t>(j.m_value.number_unsigned));
+                                write_number(static_cast<uint8_t>(j.m_value.number_unsigned));
                             }
-                            else if (j.m_value.number_unsigned <= (std::numeric_limits<std::uint8_t>::max)())
+                            else if (j.m_value.number_unsigned <= (std::numeric_limits<uint8_t>::max)())
                             {
                                 oa->write_character(to_char_type(0x18));
-                                write_number(static_cast<std::uint8_t>(j.m_value.number_unsigned));
+                                write_number(static_cast<uint8_t>(j.m_value.number_unsigned));
                             }
                             else if (j.m_value.number_unsigned <= (std::numeric_limits<std::uint16_t>::max)())
                             {
@@ -15146,7 +15146,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             else
                             {
                                 oa->write_character(to_char_type(0x1B));
-                                write_number(static_cast<std::uint64_t>(j.m_value.number_unsigned));
+                                write_number(static_cast<uint64_t>(j.m_value.number_unsigned));
                             }
                             break;
                         }
@@ -15180,12 +15180,12 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             const auto N = j.m_value.string->size();
                             if (N <= 0x17)
                             {
-                                write_number(static_cast<std::uint8_t>(0x60 + N));
+                                write_number(static_cast<uint8_t>(0x60 + N));
                             }
-                            else if (N <= (std::numeric_limits<std::uint8_t>::max)())
+                            else if (N <= (std::numeric_limits<uint8_t>::max)())
                             {
                                 oa->write_character(to_char_type(0x78));
-                                write_number(static_cast<std::uint8_t>(N));
+                                write_number(static_cast<uint8_t>(N));
                             }
                             else if (N <= (std::numeric_limits<std::uint16_t>::max)())
                             {
@@ -15198,10 +15198,10 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 write_number(static_cast<std::uint32_t>(N));
                             }
                                 // LCOV_EXCL_START
-                            else if (N <= (std::numeric_limits<std::uint64_t>::max)())
+                            else if (N <= (std::numeric_limits<uint64_t>::max)())
                             {
                                 oa->write_character(to_char_type(0x7B));
-                                write_number(static_cast<std::uint64_t>(N));
+                                write_number(static_cast<uint64_t>(N));
                             }
                             // LCOV_EXCL_STOP
 
@@ -15218,12 +15218,12 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             const auto N = j.m_value.array->size();
                             if (N <= 0x17)
                             {
-                                write_number(static_cast<std::uint8_t>(0x80 + N));
+                                write_number(static_cast<uint8_t>(0x80 + N));
                             }
-                            else if (N <= (std::numeric_limits<std::uint8_t>::max)())
+                            else if (N <= (std::numeric_limits<uint8_t>::max)())
                             {
                                 oa->write_character(to_char_type(0x98));
-                                write_number(static_cast<std::uint8_t>(N));
+                                write_number(static_cast<uint8_t>(N));
                             }
                             else if (N <= (std::numeric_limits<std::uint16_t>::max)())
                             {
@@ -15236,10 +15236,10 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 write_number(static_cast<std::uint32_t>(N));
                             }
                                 // LCOV_EXCL_START
-                            else if (N <= (std::numeric_limits<std::uint64_t>::max)())
+                            else if (N <= (std::numeric_limits<uint64_t>::max)())
                             {
                                 oa->write_character(to_char_type(0x9B));
-                                write_number(static_cast<std::uint64_t>(N));
+                                write_number(static_cast<uint64_t>(N));
                             }
                             // LCOV_EXCL_STOP
 
@@ -15255,25 +15255,25 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         {
                             if (j.m_value.binary->has_subtype())
                             {
-                                if (j.m_value.binary->subtype() <= (std::numeric_limits<std::uint8_t>::max)())
+                                if (j.m_value.binary->subtype() <= (std::numeric_limits<uint8_t>::max)())
                                 {
-                                    write_number(static_cast<std::uint8_t>(0xd8));
-                                    write_number(static_cast<std::uint8_t>(j.m_value.binary->subtype()));
+                                    write_number(static_cast<uint8_t>(0xd8));
+                                    write_number(static_cast<uint8_t>(j.m_value.binary->subtype()));
                                 }
                                 else if (j.m_value.binary->subtype() <= (std::numeric_limits<std::uint16_t>::max)())
                                 {
-                                    write_number(static_cast<std::uint8_t>(0xd9));
+                                    write_number(static_cast<uint8_t>(0xd9));
                                     write_number(static_cast<std::uint16_t>(j.m_value.binary->subtype()));
                                 }
                                 else if (j.m_value.binary->subtype() <= (std::numeric_limits<std::uint32_t>::max)())
                                 {
-                                    write_number(static_cast<std::uint8_t>(0xda));
+                                    write_number(static_cast<uint8_t>(0xda));
                                     write_number(static_cast<std::uint32_t>(j.m_value.binary->subtype()));
                                 }
-                                else if (j.m_value.binary->subtype() <= (std::numeric_limits<std::uint64_t>::max)())
+                                else if (j.m_value.binary->subtype() <= (std::numeric_limits<uint64_t>::max)())
                                 {
-                                    write_number(static_cast<std::uint8_t>(0xdb));
-                                    write_number(static_cast<std::uint64_t>(j.m_value.binary->subtype()));
+                                    write_number(static_cast<uint8_t>(0xdb));
+                                    write_number(static_cast<uint64_t>(j.m_value.binary->subtype()));
                                 }
                             }
 
@@ -15281,12 +15281,12 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             const auto N = j.m_value.binary->size();
                             if (N <= 0x17)
                             {
-                                write_number(static_cast<std::uint8_t>(0x40 + N));
+                                write_number(static_cast<uint8_t>(0x40 + N));
                             }
-                            else if (N <= (std::numeric_limits<std::uint8_t>::max)())
+                            else if (N <= (std::numeric_limits<uint8_t>::max)())
                             {
                                 oa->write_character(to_char_type(0x58));
-                                write_number(static_cast<std::uint8_t>(N));
+                                write_number(static_cast<uint8_t>(N));
                             }
                             else if (N <= (std::numeric_limits<std::uint16_t>::max)())
                             {
@@ -15299,10 +15299,10 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 write_number(static_cast<std::uint32_t>(N));
                             }
                                 // LCOV_EXCL_START
-                            else if (N <= (std::numeric_limits<std::uint64_t>::max)())
+                            else if (N <= (std::numeric_limits<uint64_t>::max)())
                             {
                                 oa->write_character(to_char_type(0x5B));
-                                write_number(static_cast<std::uint64_t>(N));
+                                write_number(static_cast<uint64_t>(N));
                             }
                             // LCOV_EXCL_STOP
 
@@ -15320,12 +15320,12 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             const auto N = j.m_value.object->size();
                             if (N <= 0x17)
                             {
-                                write_number(static_cast<std::uint8_t>(0xA0 + N));
+                                write_number(static_cast<uint8_t>(0xA0 + N));
                             }
-                            else if (N <= (std::numeric_limits<std::uint8_t>::max)())
+                            else if (N <= (std::numeric_limits<uint8_t>::max)())
                             {
                                 oa->write_character(to_char_type(0xB8));
-                                write_number(static_cast<std::uint8_t>(N));
+                                write_number(static_cast<uint8_t>(N));
                             }
                             else if (N <= (std::numeric_limits<std::uint16_t>::max)())
                             {
@@ -15338,10 +15338,10 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 write_number(static_cast<std::uint32_t>(N));
                             }
                                 // LCOV_EXCL_START
-                            else if (N <= (std::numeric_limits<std::uint64_t>::max)())
+                            else if (N <= (std::numeric_limits<uint64_t>::max)())
                             {
                                 oa->write_character(to_char_type(0xBB));
-                                write_number(static_cast<std::uint64_t>(N));
+                                write_number(static_cast<uint64_t>(N));
                             }
                             // LCOV_EXCL_STOP
 
@@ -15391,13 +15391,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 if (j.m_value.number_unsigned < 128)
                                 {
                                     // positive fixnum
-                                    write_number(static_cast<std::uint8_t>(j.m_value.number_integer));
+                                    write_number(static_cast<uint8_t>(j.m_value.number_integer));
                                 }
-                                else if (j.m_value.number_unsigned <= (std::numeric_limits<std::uint8_t>::max)())
+                                else if (j.m_value.number_unsigned <= (std::numeric_limits<uint8_t>::max)())
                                 {
                                     // uint 8
                                     oa->write_character(to_char_type(0xCC));
-                                    write_number(static_cast<std::uint8_t>(j.m_value.number_integer));
+                                    write_number(static_cast<uint8_t>(j.m_value.number_integer));
                                 }
                                 else if (j.m_value.number_unsigned <= (std::numeric_limits<std::uint16_t>::max)())
                                 {
@@ -15411,11 +15411,11 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                     oa->write_character(to_char_type(0xCE));
                                     write_number(static_cast<std::uint32_t>(j.m_value.number_integer));
                                 }
-                                else if (j.m_value.number_unsigned <= (std::numeric_limits<std::uint64_t>::max)())
+                                else if (j.m_value.number_unsigned <= (std::numeric_limits<uint64_t>::max)())
                                 {
                                     // uint 64
                                     oa->write_character(to_char_type(0xCF));
-                                    write_number(static_cast<std::uint64_t>(j.m_value.number_integer));
+                                    write_number(static_cast<uint64_t>(j.m_value.number_integer));
                                 }
                             }
                             else
@@ -15439,19 +15439,19 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                     oa->write_character(to_char_type(0xD1));
                                     write_number(static_cast<std::int16_t>(j.m_value.number_integer));
                                 }
-                                else if (j.m_value.number_integer >= (std::numeric_limits<std::int32_t>::min)() &&
-                                         j.m_value.number_integer <= (std::numeric_limits<std::int32_t>::max)())
+                                else if (j.m_value.number_integer >= (std::numeric_limits<int32_t>::min)() &&
+                                         j.m_value.number_integer <= (std::numeric_limits<int32_t>::max)())
                                 {
                                     // int 32
                                     oa->write_character(to_char_type(0xD2));
-                                    write_number(static_cast<std::int32_t>(j.m_value.number_integer));
+                                    write_number(static_cast<int32_t>(j.m_value.number_integer));
                                 }
-                                else if (j.m_value.number_integer >= (std::numeric_limits<std::int64_t>::min)() &&
-                                         j.m_value.number_integer <= (std::numeric_limits<std::int64_t>::max)())
+                                else if (j.m_value.number_integer >= (std::numeric_limits<int64_t>::min)() &&
+                                         j.m_value.number_integer <= (std::numeric_limits<int64_t>::max)())
                                 {
                                     // int 64
                                     oa->write_character(to_char_type(0xD3));
-                                    write_number(static_cast<std::int64_t>(j.m_value.number_integer));
+                                    write_number(static_cast<int64_t>(j.m_value.number_integer));
                                 }
                             }
                             break;
@@ -15462,13 +15462,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             if (j.m_value.number_unsigned < 128)
                             {
                                 // positive fixnum
-                                write_number(static_cast<std::uint8_t>(j.m_value.number_integer));
+                                write_number(static_cast<uint8_t>(j.m_value.number_integer));
                             }
-                            else if (j.m_value.number_unsigned <= (std::numeric_limits<std::uint8_t>::max)())
+                            else if (j.m_value.number_unsigned <= (std::numeric_limits<uint8_t>::max)())
                             {
                                 // uint 8
                                 oa->write_character(to_char_type(0xCC));
-                                write_number(static_cast<std::uint8_t>(j.m_value.number_integer));
+                                write_number(static_cast<uint8_t>(j.m_value.number_integer));
                             }
                             else if (j.m_value.number_unsigned <= (std::numeric_limits<std::uint16_t>::max)())
                             {
@@ -15482,11 +15482,11 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 oa->write_character(to_char_type(0xCE));
                                 write_number(static_cast<std::uint32_t>(j.m_value.number_integer));
                             }
-                            else if (j.m_value.number_unsigned <= (std::numeric_limits<std::uint64_t>::max)())
+                            else if (j.m_value.number_unsigned <= (std::numeric_limits<uint64_t>::max)())
                             {
                                 // uint 64
                                 oa->write_character(to_char_type(0xCF));
-                                write_number(static_cast<std::uint64_t>(j.m_value.number_integer));
+                                write_number(static_cast<uint64_t>(j.m_value.number_integer));
                             }
                             break;
                         }
@@ -15504,13 +15504,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             if (N <= 31)
                             {
                                 // fixstr
-                                write_number(static_cast<std::uint8_t>(0xA0 | N));
+                                write_number(static_cast<uint8_t>(0xA0 | N));
                             }
-                            else if (N <= (std::numeric_limits<std::uint8_t>::max)())
+                            else if (N <= (std::numeric_limits<uint8_t>::max)())
                             {
                                 // str 8
                                 oa->write_character(to_char_type(0xD9));
-                                write_number(static_cast<std::uint8_t>(N));
+                                write_number(static_cast<uint8_t>(N));
                             }
                             else if (N <= (std::numeric_limits<std::uint16_t>::max)())
                             {
@@ -15539,7 +15539,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             if (N <= 15)
                             {
                                 // fixarray
-                                write_number(static_cast<std::uint8_t>(0x90 | N));
+                                write_number(static_cast<uint8_t>(0x90 | N));
                             }
                             else if (N <= (std::numeric_limits<std::uint16_t>::max)())
                             {
@@ -15570,9 +15570,9 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                             // step 1: write control byte and the byte string length
                             const auto N = j.m_value.binary->size();
-                            if (N <= (std::numeric_limits<std::uint8_t>::max)())
+                            if (N <= (std::numeric_limits<uint8_t>::max)())
                             {
-                                std::uint8_t output_type{};
+                                uint8_t output_type{};
                                 bool fixed = true;
                                 if (use_ext)
                                 {
@@ -15609,12 +15609,12 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                 oa->write_character(to_char_type(output_type));
                                 if (!fixed)
                                 {
-                                    write_number(static_cast<std::uint8_t>(N));
+                                    write_number(static_cast<uint8_t>(N));
                                 }
                             }
                             else if (N <= (std::numeric_limits<std::uint16_t>::max)())
                             {
-                                const std::uint8_t output_type = use_ext
+                                const uint8_t output_type = use_ext
                                                                  ? 0xC8 // ext 16
                                                                  : 0xC5; // bin 16
 
@@ -15623,7 +15623,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             }
                             else if (N <= (std::numeric_limits<std::uint32_t>::max)())
                             {
-                                const std::uint8_t output_type = use_ext
+                                const uint8_t output_type = use_ext
                                                                  ? 0xC9 // ext 32
                                                                  : 0xC6; // bin 32
 
@@ -15652,7 +15652,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             if (N <= 15)
                             {
                                 // fixmap
-                                write_number(static_cast<std::uint8_t>(0x80 | (N & 0xF)));
+                                write_number(static_cast<uint8_t>(0x80 | (N & 0xF)));
                             }
                             else if (N <= (std::numeric_limits<std::uint16_t>::max)())
                             {
@@ -15926,7 +15926,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
     @brief Writes the given @a element_type and @a name to the output adapter
     */
                 void write_bson_entry_header(const string_t& name,
-                                             const std::uint8_t element_type)
+                                             const uint8_t element_type)
                 {
                     oa->write_character(to_char_type(element_type)); // boolean
                     oa->write_characters(
@@ -15959,7 +15959,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
     */
                 static std::size_t calc_bson_string_size(const string_t& value)
                 {
-                    return sizeof(std::int32_t) + value.size() + 1ul;
+                    return sizeof(int32_t) + value.size() + 1ul;
                 }
 
                 /*!
@@ -15970,7 +15970,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                 {
                     write_bson_entry_header(name, 0x02);
 
-                    write_number<std::int32_t>(static_cast<std::int32_t>(value.size() + 1ul), true);
+                    write_number<int32_t>(static_cast<std::int32_t>(value.size() + 1ul), true);
                     oa->write_characters(
                             reinterpret_cast<const CharType*>(value.c_str()),
                             value.size() + 1);
@@ -15987,39 +15987,39 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                 /*!
     @return The size of the BSON-encoded integer @a value
     */
-                static std::size_t calc_bson_integer_size(const std::int64_t value)
+                static std::size_t calc_bson_integer_size(const int64_t value)
                 {
-                    return (std::numeric_limits<std::int32_t>::min)() <= value && value <= (std::numeric_limits<std::int32_t>::max)()
-                           ? sizeof(std::int32_t)
-                           : sizeof(std::int64_t);
+                    return (std::numeric_limits<int32_t>::min)() <= value && value <= (std::numeric_limits<std::int32_t>::max)()
+                           ? sizeof(int32_t)
+                           : sizeof(int64_t);
                 }
 
                 /*!
     @brief Writes a BSON element with key @a name and integer @a value
     */
                 void write_bson_integer(const string_t& name,
-                                        const std::int64_t value)
+                                        const int64_t value)
                 {
-                    if ((std::numeric_limits<std::int32_t>::min)() <= value && value <= (std::numeric_limits<std::int32_t>::max)())
+                    if ((std::numeric_limits<int32_t>::min)() <= value && value <= (std::numeric_limits<std::int32_t>::max)())
                     {
                         write_bson_entry_header(name, 0x10); // int32
-                        write_number<std::int32_t>(static_cast<std::int32_t>(value), true);
+                        write_number<int32_t>(static_cast<std::int32_t>(value), true);
                     }
                     else
                     {
                         write_bson_entry_header(name, 0x12); // int64
-                        write_number<std::int64_t>(static_cast<std::int64_t>(value), true);
+                        write_number<int64_t>(static_cast<int64_t>(value), true);
                     }
                 }
 
                 /*!
     @return The size of the BSON-encoded unsigned integer in @a j
     */
-                static constexpr std::size_t calc_bson_unsigned_size(const std::uint64_t value) noexcept
+                static constexpr std::size_t calc_bson_unsigned_size(const uint64_t value) noexcept
                 {
-                    return (value <= static_cast<std::uint64_t>((std::numeric_limits<std::int32_t>::max)()))
-                           ? sizeof(std::int32_t)
-                           : sizeof(std::int64_t);
+                    return (value <= static_cast<uint64_t>((std::numeric_limits<int32_t>::max)()))
+                           ? sizeof(int32_t)
+                           : sizeof(int64_t);
                 }
 
                 /*!
@@ -16028,15 +16028,15 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                 void write_bson_unsigned(const string_t& name,
                                          const BasicJsonType& j)
                 {
-                    if (j.m_value.number_unsigned <= static_cast<std::uint64_t>((std::numeric_limits<std::int32_t>::max)()))
+                    if (j.m_value.number_unsigned <= static_cast<uint64_t>((std::numeric_limits<int32_t>::max)()))
                     {
                         write_bson_entry_header(name, 0x10 /* int32 */);
-                        write_number<std::int32_t>(static_cast<std::int32_t>(j.m_value.number_unsigned), true);
+                        write_number<int32_t>(static_cast<std::int32_t>(j.m_value.number_unsigned), true);
                     }
-                    else if (j.m_value.number_unsigned <= static_cast<std::uint64_t>((std::numeric_limits<std::int64_t>::max)()))
+                    else if (j.m_value.number_unsigned <= static_cast<uint64_t>((std::numeric_limits<int64_t>::max)()))
                     {
                         write_bson_entry_header(name, 0x12 /* int64 */);
-                        write_number<std::int64_t>(static_cast<std::int64_t>(j.m_value.number_unsigned), true);
+                        write_number<int64_t>(static_cast<int64_t>(j.m_value.number_unsigned), true);
                     }
                     else
                     {
@@ -16066,7 +16066,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         return result + calc_bson_element_size(std::to_string(array_index++), el);
                     });
 
-                    return sizeof(std::int32_t) + embedded_document_size + 1ul;
+                    return sizeof(int32_t) + embedded_document_size + 1ul;
                 }
 
                 /*!
@@ -16074,7 +16074,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
     */
                 static std::size_t calc_bson_binary_size(const typename BasicJsonType::binary_t& value)
                 {
-                    return sizeof(std::int32_t) + value.size() + 1ul;
+                    return sizeof(int32_t) + value.size() + 1ul;
                 }
 
                 /*!
@@ -16084,7 +16084,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                       const typename BasicJsonType::array_t& value)
                 {
                     write_bson_entry_header(name, 0x04); // array
-                    write_number<std::int32_t>(static_cast<std::int32_t>(calc_bson_array_size(value)), true);
+                    write_number<int32_t>(static_cast<std::int32_t>(calc_bson_array_size(value)), true);
 
                     std::size_t array_index = 0ul;
 
@@ -16104,8 +16104,8 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                 {
                     write_bson_entry_header(name, 0x05);
 
-                    write_number<std::int32_t>(static_cast<std::int32_t>(value.size()), true);
-                    write_number(value.has_subtype() ? static_cast<std::uint8_t>(value.subtype()) : static_cast<std::uint8_t>(0x00));
+                    write_number<int32_t>(static_cast<std::int32_t>(value.size()), true);
+                    write_number(value.has_subtype() ? static_cast<uint8_t>(value.subtype()) : static_cast<std::uint8_t>(0x00));
 
                     oa->write_characters(reinterpret_cast<const CharType*>(value.data()), value.size());
                 }
@@ -16217,7 +16217,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                                                           return result += calc_bson_element_size(el.first, el.second);
                                                                       });
 
-                    return sizeof(std::int32_t) + document_size + 1ul;
+                    return sizeof(int32_t) + document_size + 1ul;
                 }
 
                 /*!
@@ -16226,7 +16226,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
     */
                 void write_bson_object(const typename BasicJsonType::object_t& value)
                 {
-                    write_number<std::int32_t>(static_cast<std::int32_t>(calc_bson_object_size(value)), true);
+                    write_number<int32_t>(static_cast<std::int32_t>(calc_bson_object_size(value)), true);
 
                     for (const auto& el : value)
                     {
@@ -16289,23 +16289,23 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                                                      const bool add_prefix,
                                                      const bool use_bjdata)
                 {
-                    if (n <= static_cast<std::uint64_t>((std::numeric_limits<std::int8_t>::max)()))
+                    if (n <= static_cast<uint64_t>((std::numeric_limits<std::int8_t>::max)()))
                     {
                         if (add_prefix)
                         {
                             oa->write_character(to_char_type('i'));  // int8
                         }
-                        write_number(static_cast<std::uint8_t>(n), use_bjdata);
+                        write_number(static_cast<uint8_t>(n), use_bjdata);
                     }
-                    else if (n <= (std::numeric_limits<std::uint8_t>::max)())
+                    else if (n <= (std::numeric_limits<uint8_t>::max)())
                     {
                         if (add_prefix)
                         {
                             oa->write_character(to_char_type('U'));  // uint8
                         }
-                        write_number(static_cast<std::uint8_t>(n), use_bjdata);
+                        write_number(static_cast<uint8_t>(n), use_bjdata);
                     }
-                    else if (n <= static_cast<std::uint64_t>((std::numeric_limits<std::int16_t>::max)()))
+                    else if (n <= static_cast<uint64_t>((std::numeric_limits<std::int16_t>::max)()))
                     {
                         if (add_prefix)
                         {
@@ -16321,13 +16321,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         }
                         write_number(static_cast<std::uint16_t>(n), use_bjdata);
                     }
-                    else if (n <= static_cast<std::uint64_t>((std::numeric_limits<std::int32_t>::max)()))
+                    else if (n <= static_cast<uint64_t>((std::numeric_limits<int32_t>::max)()))
                     {
                         if (add_prefix)
                         {
                             oa->write_character(to_char_type('l'));  // int32
                         }
-                        write_number(static_cast<std::int32_t>(n), use_bjdata);
+                        write_number(static_cast<int32_t>(n), use_bjdata);
                     }
                     else if (use_bjdata && n <= static_cast<uint64_t>((std::numeric_limits<uint32_t>::max)()))
                     {
@@ -16337,13 +16337,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         }
                         write_number(static_cast<std::uint32_t>(n), use_bjdata);
                     }
-                    else if (n <= static_cast<std::uint64_t>((std::numeric_limits<std::int64_t>::max)()))
+                    else if (n <= static_cast<uint64_t>((std::numeric_limits<int64_t>::max)()))
                     {
                         if (add_prefix)
                         {
                             oa->write_character(to_char_type('L'));  // int64
                         }
-                        write_number(static_cast<std::int64_t>(n), use_bjdata);
+                        write_number(static_cast<int64_t>(n), use_bjdata);
                     }
                     else if (use_bjdata && n <= (std::numeric_limits<uint64_t>::max)())
                     {
@@ -16351,7 +16351,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         {
                             oa->write_character(to_char_type('M'));  // uint64 - bjdata only
                         }
-                        write_number(static_cast<std::uint64_t>(n), use_bjdata);
+                        write_number(static_cast<uint64_t>(n), use_bjdata);
                     }
                     else
                     {
@@ -16364,7 +16364,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         write_number_with_ubjson_prefix(number.size(), true, use_bjdata);
                         for (std::size_t i = 0; i < number.size(); ++i)
                         {
-                            oa->write_character(to_char_type(static_cast<std::uint8_t>(number[i])));
+                            oa->write_character(to_char_type(static_cast<uint8_t>(number[i])));
                         }
                     }
                 }
@@ -16385,13 +16385,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         }
                         write_number(static_cast<std::int8_t>(n), use_bjdata);
                     }
-                    else if (static_cast<std::int64_t>((std::numeric_limits<std::uint8_t>::min)()) <= n && n <= static_cast<std::int64_t>((std::numeric_limits<std::uint8_t>::max)()))
+                    else if (static_cast<int64_t>((std::numeric_limits<uint8_t>::min)()) <= n && n <= static_cast<int64_t>((std::numeric_limits<std::uint8_t>::max)()))
                     {
                         if (add_prefix)
                         {
                             oa->write_character(to_char_type('U'));  // uint8
                         }
-                        write_number(static_cast<std::uint8_t>(n), use_bjdata);
+                        write_number(static_cast<uint8_t>(n), use_bjdata);
                     }
                     else if ((std::numeric_limits<std::int16_t>::min)() <= n && n <= (std::numeric_limits<std::int16_t>::max)())
                     {
@@ -16401,7 +16401,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         }
                         write_number(static_cast<std::int16_t>(n), use_bjdata);
                     }
-                    else if (use_bjdata && (static_cast<std::int64_t>((std::numeric_limits<std::uint16_t>::min)()) <= n && n <= static_cast<std::int64_t>((std::numeric_limits<std::uint16_t>::max)())))
+                    else if (use_bjdata && (static_cast<int64_t>((std::numeric_limits<std::uint16_t>::min)()) <= n && n <= static_cast<int64_t>((std::numeric_limits<std::uint16_t>::max)())))
                     {
                         if (add_prefix)
                         {
@@ -16409,15 +16409,15 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         }
                         write_number(static_cast<uint16_t>(n), use_bjdata);
                     }
-                    else if ((std::numeric_limits<std::int32_t>::min)() <= n && n <= (std::numeric_limits<std::int32_t>::max)())
+                    else if ((std::numeric_limits<int32_t>::min)() <= n && n <= (std::numeric_limits<std::int32_t>::max)())
                     {
                         if (add_prefix)
                         {
                             oa->write_character(to_char_type('l'));  // int32
                         }
-                        write_number(static_cast<std::int32_t>(n), use_bjdata);
+                        write_number(static_cast<int32_t>(n), use_bjdata);
                     }
-                    else if (use_bjdata && (static_cast<std::int64_t>((std::numeric_limits<std::uint32_t>::min)()) <= n && n <= static_cast<std::int64_t>((std::numeric_limits<std::uint32_t>::max)())))
+                    else if (use_bjdata && (static_cast<int64_t>((std::numeric_limits<std::uint32_t>::min)()) <= n && n <= static_cast<int64_t>((std::numeric_limits<std::uint32_t>::max)())))
                     {
                         if (add_prefix)
                         {
@@ -16425,13 +16425,13 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         }
                         write_number(static_cast<uint32_t>(n), use_bjdata);
                     }
-                    else if ((std::numeric_limits<std::int64_t>::min)() <= n && n <= (std::numeric_limits<std::int64_t>::max)())
+                    else if ((std::numeric_limits<int64_t>::min)() <= n && n <= (std::numeric_limits<int64_t>::max)())
                     {
                         if (add_prefix)
                         {
                             oa->write_character(to_char_type('L'));  // int64
                         }
-                        write_number(static_cast<std::int64_t>(n), use_bjdata);
+                        write_number(static_cast<int64_t>(n), use_bjdata);
                     }
                         // LCOV_EXCL_START
                     else
@@ -16445,7 +16445,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         write_number_with_ubjson_prefix(number.size(), true, use_bjdata);
                         for (std::size_t i = 0; i < number.size(); ++i)
                         {
-                            oa->write_character(to_char_type(static_cast<std::uint8_t>(number[i])));
+                            oa->write_character(to_char_type(static_cast<uint8_t>(number[i])));
                         }
                     }
                     // LCOV_EXCL_STOP
@@ -16470,7 +16470,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             {
                                 return 'i';
                             }
-                            if ((std::numeric_limits<std::uint8_t>::min)() <= j.m_value.number_integer && j.m_value.number_integer <= (std::numeric_limits<std::uint8_t>::max)())
+                            if ((std::numeric_limits<uint8_t>::min)() <= j.m_value.number_integer && j.m_value.number_integer <= (std::numeric_limits<std::uint8_t>::max)())
                             {
                                 return 'U';
                             }
@@ -16482,7 +16482,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             {
                                 return 'u';
                             }
-                            if ((std::numeric_limits<std::int32_t>::min)() <= j.m_value.number_integer && j.m_value.number_integer <= (std::numeric_limits<std::int32_t>::max)())
+                            if ((std::numeric_limits<int32_t>::min)() <= j.m_value.number_integer && j.m_value.number_integer <= (std::numeric_limits<std::int32_t>::max)())
                             {
                                 return 'l';
                             }
@@ -16490,7 +16490,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             {
                                 return 'm';
                             }
-                            if ((std::numeric_limits<std::int64_t>::min)() <= j.m_value.number_integer && j.m_value.number_integer <= (std::numeric_limits<std::int64_t>::max)())
+                            if ((std::numeric_limits<int64_t>::min)() <= j.m_value.number_integer && j.m_value.number_integer <= (std::numeric_limits<int64_t>::max)())
                             {
                                 return 'L';
                             }
@@ -16500,35 +16500,35 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                         case value_t::number_unsigned:
                         {
-                            if (j.m_value.number_unsigned <= static_cast<std::uint64_t>((std::numeric_limits<std::int8_t>::max)()))
+                            if (j.m_value.number_unsigned <= static_cast<uint64_t>((std::numeric_limits<std::int8_t>::max)()))
                             {
                                 return 'i';
                             }
-                            if (j.m_value.number_unsigned <= static_cast<std::uint64_t>((std::numeric_limits<std::uint8_t>::max)()))
+                            if (j.m_value.number_unsigned <= static_cast<uint64_t>((std::numeric_limits<uint8_t>::max)()))
                             {
                                 return 'U';
                             }
-                            if (j.m_value.number_unsigned <= static_cast<std::uint64_t>((std::numeric_limits<std::int16_t>::max)()))
+                            if (j.m_value.number_unsigned <= static_cast<uint64_t>((std::numeric_limits<std::int16_t>::max)()))
                             {
                                 return 'I';
                             }
-                            if (use_bjdata && j.m_value.number_unsigned <= static_cast<std::uint64_t>((std::numeric_limits<std::uint16_t>::max)()))
+                            if (use_bjdata && j.m_value.number_unsigned <= static_cast<uint64_t>((std::numeric_limits<std::uint16_t>::max)()))
                             {
                                 return 'u';
                             }
-                            if (j.m_value.number_unsigned <= static_cast<std::uint64_t>((std::numeric_limits<std::int32_t>::max)()))
+                            if (j.m_value.number_unsigned <= static_cast<uint64_t>((std::numeric_limits<int32_t>::max)()))
                             {
                                 return 'l';
                             }
-                            if (use_bjdata && j.m_value.number_unsigned <= static_cast<std::uint64_t>((std::numeric_limits<std::uint32_t>::max)()))
+                            if (use_bjdata && j.m_value.number_unsigned <= static_cast<uint64_t>((std::numeric_limits<std::uint32_t>::max)()))
                             {
                                 return 'm';
                             }
-                            if (j.m_value.number_unsigned <= static_cast<std::uint64_t>((std::numeric_limits<std::int64_t>::max)()))
+                            if (j.m_value.number_unsigned <= static_cast<uint64_t>((std::numeric_limits<int64_t>::max)()))
                             {
                                 return 'L';
                             }
-                            if (use_bjdata && j.m_value.number_unsigned <= (std::numeric_limits<std::uint64_t>::max)())
+                            if (use_bjdata && j.m_value.number_unsigned <= (std::numeric_limits<uint64_t>::max)())
                             {
                                 return 'M';
                             }
@@ -16608,7 +16608,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                     {
                         for (const auto& el : value.at(key))
                         {
-                            write_number(static_cast<std::uint8_t>(el.m_value.number_unsigned), true);
+                            write_number(static_cast<uint8_t>(el.m_value.number_unsigned), true);
                         }
                     }
                     else if (dtype == 'i')
@@ -16643,21 +16643,21 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                     {
                         for (const auto& el : value.at(key))
                         {
-                            write_number(static_cast<std::int32_t>(el.m_value.number_integer), true);
+                            write_number(static_cast<int32_t>(el.m_value.number_integer), true);
                         }
                     }
                     else if (dtype == 'M')
                     {
                         for (const auto& el : value.at(key))
                         {
-                            write_number(static_cast<std::uint64_t>(el.m_value.number_unsigned), true);
+                            write_number(static_cast<uint64_t>(el.m_value.number_unsigned), true);
                         }
                     }
                     else if (dtype == 'L')
                     {
                         for (const auto& el : value.at(key))
                         {
-                            write_number(static_cast<std::int64_t>(el.m_value.number_integer), true);
+                            write_number(static_cast<int64_t>(el.m_value.number_integer), true);
                         }
                     }
                     else if (dtype == 'd')
@@ -16745,16 +16745,16 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                 // See <https://github.com/nlohmann/json/issues/1286> for a discussion.
                 template < typename C = CharType,
                         enable_if_t < std::is_signed<C>::value && std::is_signed<char>::value > * = nullptr >
-                static constexpr CharType to_char_type(std::uint8_t x) noexcept
+                static constexpr CharType to_char_type(uint8_t x) noexcept
                 {
                     return *reinterpret_cast<char*>(&x);
                 }
 
                 template < typename C = CharType,
                         enable_if_t < std::is_signed<C>::value && std::is_unsigned<char>::value > * = nullptr >
-                static CharType to_char_type(std::uint8_t x) noexcept
+                static CharType to_char_type(uint8_t x) noexcept
                 {
-                    static_assert(sizeof(std::uint8_t) == sizeof(CharType), "size of CharType must be equal to std::uint8_t");
+                    static_assert(sizeof(uint8_t) == sizeof(CharType), "size of CharType must be equal to std::uint8_t");
                     static_assert(std::is_trivial<CharType>::value, "CharType must be trivial");
                     CharType result;
                     std::memcpy(&result, &x, sizeof(x));
@@ -16763,7 +16763,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                 template<typename C = CharType,
                         enable_if_t<std::is_unsigned<C>::value>* = nullptr>
-                static constexpr CharType to_char_type(std::uint8_t x) noexcept
+                static constexpr CharType to_char_type(uint8_t x) noexcept
                 {
                     return x;
                 }
@@ -16879,10 +16879,10 @@ For a detailed description of the algorithm see:
                 {
                     static constexpr int kPrecision = 64; // = q
 
-                    std::uint64_t f = 0;
+                    uint64_t f = 0;
                     int e = 0;
 
-                    constexpr diyfp(std::uint64_t f_, int e_) noexcept : f(f_), e(e_) {}
+                    constexpr diyfp(uint64_t f_, int e_) noexcept : f(f_), e(e_) {}
 
                     /*!
     @brief returns x - y
@@ -16927,23 +16927,23 @@ For a detailed description of the algorithm see:
                         //
                         //   = p_lo + 2^64 p_hi
 
-                        const std::uint64_t u_lo = x.f & 0xFFFFFFFFu;
-                        const std::uint64_t u_hi = x.f >> 32u;
-                        const std::uint64_t v_lo = y.f & 0xFFFFFFFFu;
-                        const std::uint64_t v_hi = y.f >> 32u;
+                        const uint64_t u_lo = x.f & 0xFFFFFFFFu;
+                        const uint64_t u_hi = x.f >> 32u;
+                        const uint64_t v_lo = y.f & 0xFFFFFFFFu;
+                        const uint64_t v_hi = y.f >> 32u;
 
-                        const std::uint64_t p0 = u_lo * v_lo;
-                        const std::uint64_t p1 = u_lo * v_hi;
-                        const std::uint64_t p2 = u_hi * v_lo;
-                        const std::uint64_t p3 = u_hi * v_hi;
+                        const uint64_t p0 = u_lo * v_lo;
+                        const uint64_t p1 = u_lo * v_hi;
+                        const uint64_t p2 = u_hi * v_lo;
+                        const uint64_t p3 = u_hi * v_hi;
 
-                        const std::uint64_t p0_hi = p0 >> 32u;
-                        const std::uint64_t p1_lo = p1 & 0xFFFFFFFFu;
-                        const std::uint64_t p1_hi = p1 >> 32u;
-                        const std::uint64_t p2_lo = p2 & 0xFFFFFFFFu;
-                        const std::uint64_t p2_hi = p2 >> 32u;
+                        const uint64_t p0_hi = p0 >> 32u;
+                        const uint64_t p1_lo = p1 & 0xFFFFFFFFu;
+                        const uint64_t p1_hi = p1 >> 32u;
+                        const uint64_t p2_lo = p2 & 0xFFFFFFFFu;
+                        const uint64_t p2_hi = p2 >> 32u;
 
-                        std::uint64_t Q = p0_hi + p1_lo + p2_lo;
+                        uint64_t Q = p0_hi + p1_lo + p2_lo;
 
                         // The full product might now be computed as
                         //
@@ -16954,9 +16954,9 @@ For a detailed description of the algorithm see:
                         // Effectively we only need to add the highest bit in p_lo to p_hi (and
                         // Q_hi + 1 does not overflow).
 
-                        Q += std::uint64_t{1} << (64u - 32u - 1u); // round, ties up
+                        Q += uint64_t{1} << (64u - 32u - 1u); // round, ties up
 
-                        const std::uint64_t h = p3 + p2_hi + p1_hi + (Q >> 32u);
+                        const uint64_t h = p3 + p2_hi + p1_hi + (Q >> 32u);
 
                         return {h, x.e + y.e + 64};
                     }
@@ -17025,13 +17025,13 @@ boundaries.
                     constexpr int      kPrecision = std::numeric_limits<FloatType>::digits; // = p (includes the hidden bit)
                     constexpr int      kBias      = std::numeric_limits<FloatType>::max_exponent - 1 + (kPrecision - 1);
                     constexpr int      kMinExp    = 1 - kBias;
-                    constexpr std::uint64_t kHiddenBit = std::uint64_t{1} << (kPrecision - 1); // = 2^(p-1)
+                    constexpr uint64_t kHiddenBit = std::uint64_t{1} << (kPrecision - 1); // = 2^(p-1)
 
-                    using bits_type = typename std::conditional<kPrecision == 24, std::uint32_t, std::uint64_t >::type;
+                    using bits_type = typename std::conditional<kPrecision == 24, std::uint32_t, uint64_t >::type;
 
-                    const auto bits = static_cast<std::uint64_t>(reinterpret_bits<bits_type>(value));
-                    const std::uint64_t E = bits >> (kPrecision - 1);
-                    const std::uint64_t F = bits & (kHiddenBit - 1);
+                    const auto bits = static_cast<uint64_t>(reinterpret_bits<bits_type>(value));
+                    const uint64_t E = bits >> (kPrecision - 1);
+                    const uint64_t F = bits & (kHiddenBit - 1);
 
                     const bool is_denormal = E == 0;
                     const diyfp v = is_denormal
@@ -17134,7 +17134,7 @@ boundaries.
 
                 struct cached_power // c = f * 2^e ~= 10^k
                 {
-                    std::uint64_t f;
+                    uint64_t f;
                     int e;
                     int k;
                 };
@@ -17364,8 +17364,8 @@ For n == 0, returns 1 and sets pow10 := 1.
                     return 1;
                 }
 
-                inline void grisu2_round(char* buf, int len, std::uint64_t dist, std::uint64_t delta,
-                                         std::uint64_t rest, std::uint64_t ten_k)
+                inline void grisu2_round(char* buf, int len, uint64_t dist, std::uint64_t delta,
+                                         uint64_t rest, std::uint64_t ten_k)
                 {
                     JSON_ASSERT(len >= 1);
                     JSON_ASSERT(dist <= delta);
@@ -17426,8 +17426,8 @@ M- and M+ must be normalized and share the same exponent -60 <= e <= -32.
                     JSON_ASSERT(M_plus.e >= kAlpha);
                     JSON_ASSERT(M_plus.e <= kGamma);
 
-                    std::uint64_t delta = diyfp::sub(M_plus, M_minus).f; // (significand of (M+ - M-), implicit exponent is e)
-                    std::uint64_t dist  = diyfp::sub(M_plus, w      ).f; // (significand of (M+ - w ), implicit exponent is e)
+                    uint64_t delta = diyfp::sub(M_plus, M_minus).f; // (significand of (M+ - M-), implicit exponent is e)
+                    uint64_t dist  = diyfp::sub(M_plus, w      ).f; // (significand of (M+ - w ), implicit exponent is e)
 
                     // Split M+ = f * 2^e into two parts p1 and p2 (note: e < 0):
                     //
@@ -17436,10 +17436,10 @@ M- and M+ must be normalized and share the same exponent -60 <= e <= -32.
                     //         = ((p1        ) * 2^-e + (p2        )) * 2^e
                     //         = p1 + p2 * 2^e
 
-                    const diyfp one(std::uint64_t{1} << -M_plus.e, M_plus.e);
+                    const diyfp one(uint64_t{1} << -M_plus.e, M_plus.e);
 
                     auto p1 = static_cast<std::uint32_t>(M_plus.f >> -one.e); // p1 = f div 2^-e (Since -e >= 32, p1 fits into a 32-bit int.)
-                    std::uint64_t p2 = M_plus.f & (one.f - 1);                    // p2 = f mod 2^-e
+                    uint64_t p2 = M_plus.f & (one.f - 1);                    // p2 = f mod 2^-e
 
                     // 1)
                     //
@@ -17501,7 +17501,7 @@ M- and M+ must be normalized and share the same exponent -60 <= e <= -32.
                         // Note:
                         // Since rest and delta share the same exponent e, it suffices to
                         // compare the significands.
-                        const std::uint64_t rest = (std::uint64_t{p1} << -one.e) + p2;
+                        const uint64_t rest = (std::uint64_t{p1} << -one.e) + p2;
                         if (rest <= delta)
                         {
                             // V = buffer * 10^n, with M- <= V <= M+.
@@ -17517,7 +17517,7 @@ M- and M+ must be normalized and share the same exponent -60 <= e <= -32.
                             //
                             //      10^n = (10^n * 2^-e) * 2^e = ulp * 2^e
                             //
-                            const std::uint64_t ten_n = std::uint64_t{pow10} << -one.e;
+                            const uint64_t ten_n = std::uint64_t{pow10} << -one.e;
                             grisu2_round(buffer, length, dist, delta, rest, ten_n);
 
                             return;
@@ -17579,10 +17579,10 @@ M- and M+ must be normalized and share the same exponent -60 <= e <= -32.
                         //         = buffer * 10^-m + 10^-m * (1/10 * (10 * p2)                   ) * 2^e
                         //         = buffer * 10^-m + 10^-m * (1/10 * ((10*p2 div 2^-e) * 2^-e + (10*p2 mod 2^-e)) * 2^e
                         //
-                        JSON_ASSERT(p2 <= (std::numeric_limits<std::uint64_t>::max)() / 10);
+                        JSON_ASSERT(p2 <= (std::numeric_limits<uint64_t>::max)() / 10);
                         p2 *= 10;
-                        const std::uint64_t d = p2 >> -one.e;     // d = (10 * p2) div 2^-e
-                        const std::uint64_t r = p2 & (one.f - 1); // r = (10 * p2) mod 2^-e
+                        const uint64_t d = p2 >> -one.e;     // d = (10 * p2) div 2^-e
+                        const uint64_t r = p2 & (one.f - 1); // r = (10 * p2) mod 2^-e
                         //
                         //      M+ = buffer * 10^-m + 10^-m * (1/10 * (d * 2^-e + r) * 2^e
                         //         = buffer * 10^-m + 10^-m * (1/10 * (d + r * 2^e))
@@ -17622,7 +17622,7 @@ M- and M+ must be normalized and share the same exponent -60 <= e <= -32.
                     //
                     //      10^m * 10^-m = 1 = 2^-e * 2^e = ten_m * 2^e
                     //
-                    const std::uint64_t ten_m = one.f;
+                    const uint64_t ten_m = one.f;
                     grisu2_round(buffer, length, dist, delta, p2, ten_m);
 
                     // By construction this algorithm generates the shortest possible decimal
@@ -17977,8 +17977,8 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                 using number_integer_t = typename BasicJsonType::number_integer_t;
                 using number_unsigned_t = typename BasicJsonType::number_unsigned_t;
                 using binary_char_t = typename BasicJsonType::binary_t::value_type;
-                static constexpr std::uint8_t UTF8_ACCEPT = 0;
-                static constexpr std::uint8_t UTF8_REJECT = 1;
+                static constexpr uint8_t UTF8_ACCEPT = 0;
+                static constexpr uint8_t UTF8_REJECT = 1;
 
             public:
                 /*!
@@ -18313,7 +18313,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                 void dump_escaped(const string_t& s, const bool ensure_ascii)
                 {
                     std::uint32_t codepoint{};
-                    std::uint8_t state = UTF8_ACCEPT;
+                    uint8_t state = UTF8_ACCEPT;
                     std::size_t bytes = 0;  // number of bytes written to string_buffer
 
                     // number of bytes written at the point of the last valid byte
@@ -18322,7 +18322,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 
                     for (std::size_t i = 0; i < s.size(); ++i)
                     {
-                        const auto byte = static_cast<std::uint8_t>(s[i]);
+                        const auto byte = static_cast<uint8_t>(s[i]);
 
                         switch (decode(state, codepoint, byte))
                         {
@@ -18524,7 +18524,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                         {
                             case error_handler_t::strict:
                             {
-                                JSON_THROW(type_error::create(316, concat("incomplete UTF-8 string; last byte: 0x", hex_bytes(static_cast<std::uint8_t>(s.back() | 0))), nullptr));
+                                JSON_THROW(type_error::create(316, concat("incomplete UTF-8 string; last byte: 0x", hex_bytes(static_cast<uint8_t>(s.back() | 0))), nullptr));
                             }
 
                             case error_handler_t::ignore:
@@ -18596,7 +18596,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
      * @param[in] byte byte to represent
      * @return representation ("00".."FF")
      */
-                static std::string hex_bytes(std::uint8_t byte)
+                static std::string hex_bytes(uint8_t byte)
                 {
                     std::string result = "FF";
                     constexpr const char* nibble_to_hex = "0123456789ABCDEF";
@@ -18819,9 +18819,9 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
     @copyright Copyright (c) 2008-2009 Bjoern Hoehrmann <bjoern@hoehrmann.de>
     @sa http://bjoern.hoehrmann.de/utf-8/decoder/dfa/
     */
-                static std::uint8_t decode(std::uint8_t& state, std::uint32_t& codep, const std::uint8_t byte) noexcept
+                static uint8_t decode(std::uint8_t& state, std::uint32_t& codep, const std::uint8_t byte) noexcept
                 {
-                    static const std::array<std::uint8_t, 400> utf8d =
+                    static const std::array<uint8_t, 400> utf8d =
                             {
                                     {
                                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 00..1F
@@ -18842,7 +18842,7 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
                             };
 
                     JSON_ASSERT(byte < utf8d.size());
-                    const std::uint8_t type = utf8d[byte];
+                    const uint8_t type = utf8d[byte];
 
                     codep = (state != UTF8_ACCEPT)
                             ? (byte & 0x3fu) | (codep << 6u)
@@ -23423,18 +23423,18 @@ The invariants are checked by member function assert_invariant().
         public:
             /// @brief create a CBOR serialization of a given JSON value
             /// @sa https://json.nlohmann.me/api/basic_json/to_cbor/
-            static std::vector<std::uint8_t> to_cbor(const basic_json& j)
+            static std::vector<uint8_t> to_cbor(const basic_json& j)
             {
-                std::vector<std::uint8_t> result;
+                std::vector<uint8_t> result;
                 to_cbor(j, result);
                 return result;
             }
 
             /// @brief create a CBOR serialization of a given JSON value
             /// @sa https://json.nlohmann.me/api/basic_json/to_cbor/
-            static void to_cbor(const basic_json& j, detail::output_adapter<std::uint8_t> o)
+            static void to_cbor(const basic_json& j, detail::output_adapter<uint8_t> o)
             {
-                binary_writer<std::uint8_t>(o).write_cbor(j);
+                binary_writer<uint8_t>(o).write_cbor(j);
             }
 
             /// @brief create a CBOR serialization of a given JSON value
@@ -23446,18 +23446,18 @@ The invariants are checked by member function assert_invariant().
 
             /// @brief create a MessagePack serialization of a given JSON value
             /// @sa https://json.nlohmann.me/api/basic_json/to_msgpack/
-            static std::vector<std::uint8_t> to_msgpack(const basic_json& j)
+            static std::vector<uint8_t> to_msgpack(const basic_json& j)
             {
-                std::vector<std::uint8_t> result;
+                std::vector<uint8_t> result;
                 to_msgpack(j, result);
                 return result;
             }
 
             /// @brief create a MessagePack serialization of a given JSON value
             /// @sa https://json.nlohmann.me/api/basic_json/to_msgpack/
-            static void to_msgpack(const basic_json& j, detail::output_adapter<std::uint8_t> o)
+            static void to_msgpack(const basic_json& j, detail::output_adapter<uint8_t> o)
             {
-                binary_writer<std::uint8_t>(o).write_msgpack(j);
+                binary_writer<uint8_t>(o).write_msgpack(j);
             }
 
             /// @brief create a MessagePack serialization of a given JSON value
@@ -23469,21 +23469,21 @@ The invariants are checked by member function assert_invariant().
 
             /// @brief create a UBJSON serialization of a given JSON value
             /// @sa https://json.nlohmann.me/api/basic_json/to_ubjson/
-            static std::vector<std::uint8_t> to_ubjson(const basic_json& j,
+            static std::vector<uint8_t> to_ubjson(const basic_json& j,
                                                        const bool use_size = false,
                                                        const bool use_type = false)
             {
-                std::vector<std::uint8_t> result;
+                std::vector<uint8_t> result;
                 to_ubjson(j, result, use_size, use_type);
                 return result;
             }
 
             /// @brief create a UBJSON serialization of a given JSON value
             /// @sa https://json.nlohmann.me/api/basic_json/to_ubjson/
-            static void to_ubjson(const basic_json& j, detail::output_adapter<std::uint8_t> o,
+            static void to_ubjson(const basic_json& j, detail::output_adapter<uint8_t> o,
                                   const bool use_size = false, const bool use_type = false)
             {
-                binary_writer<std::uint8_t>(o).write_ubjson(j, use_size, use_type);
+                binary_writer<uint8_t>(o).write_ubjson(j, use_size, use_type);
             }
 
             /// @brief create a UBJSON serialization of a given JSON value
@@ -23496,21 +23496,21 @@ The invariants are checked by member function assert_invariant().
 
             /// @brief create a BJData serialization of a given JSON value
             /// @sa https://json.nlohmann.me/api/basic_json/to_bjdata/
-            static std::vector<std::uint8_t> to_bjdata(const basic_json& j,
+            static std::vector<uint8_t> to_bjdata(const basic_json& j,
                                                        const bool use_size = false,
                                                        const bool use_type = false)
             {
-                std::vector<std::uint8_t> result;
+                std::vector<uint8_t> result;
                 to_bjdata(j, result, use_size, use_type);
                 return result;
             }
 
             /// @brief create a BJData serialization of a given JSON value
             /// @sa https://json.nlohmann.me/api/basic_json/to_bjdata/
-            static void to_bjdata(const basic_json& j, detail::output_adapter<std::uint8_t> o,
+            static void to_bjdata(const basic_json& j, detail::output_adapter<uint8_t> o,
                                   const bool use_size = false, const bool use_type = false)
             {
-                binary_writer<std::uint8_t>(o).write_ubjson(j, use_size, use_type, true, true);
+                binary_writer<uint8_t>(o).write_ubjson(j, use_size, use_type, true, true);
             }
 
             /// @brief create a BJData serialization of a given JSON value
@@ -23523,18 +23523,18 @@ The invariants are checked by member function assert_invariant().
 
             /// @brief create a BSON serialization of a given JSON value
             /// @sa https://json.nlohmann.me/api/basic_json/to_bson/
-            static std::vector<std::uint8_t> to_bson(const basic_json& j)
+            static std::vector<uint8_t> to_bson(const basic_json& j)
             {
-                std::vector<std::uint8_t> result;
+                std::vector<uint8_t> result;
                 to_bson(j, result);
                 return result;
             }
 
             /// @brief create a BSON serialization of a given JSON value
             /// @sa https://json.nlohmann.me/api/basic_json/to_bson/
-            static void to_bson(const basic_json& j, detail::output_adapter<std::uint8_t> o)
+            static void to_bson(const basic_json& j, detail::output_adapter<uint8_t> o)
             {
-                binary_writer<std::uint8_t>(o).write_bson(j);
+                binary_writer<uint8_t>(o).write_bson(j);
             }
 
             /// @brief create a BSON serialization of a given JSON value

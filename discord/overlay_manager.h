@@ -24,7 +24,7 @@ public:
                           MouseButton which,
                           int32_t x,
                           int32_t y);
-    void MouseMotionEvent(int32_t x, std::int32_t y);
+    void MouseMotionEvent(int32_t x, int32_t y);
     void ImeCommitText(char const* text);
     void ImeSetComposition(char const* text,
                            ImeUnderline* underlines,
@@ -33,11 +33,11 @@ public:
                            int32_t to);
     void ImeCancelComposition();
     void SetImeCompositionRangeCallback(
-      std::function<void(int32_t, std::int32_t, Rect*, uint32_t)>
+      std::function<void(int32_t, int32_t, Rect*, uint32_t)>
         onImeCompositionRangeChanged);
     void SetImeSelectionBoundsCallback(
       std::function<void(Rect, Rect, bool)> onImeSelectionBoundsChanged);
-    bool IsPointInsideClickZone(int32_t x, std::int32_t y);
+    bool IsPointInsideClickZone(int32_t x, int32_t y);
 
     Event<bool> OnToggle;
 

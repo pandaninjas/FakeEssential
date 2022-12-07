@@ -15,8 +15,8 @@ public:
     void ReadAsync(char const* name,
                    std::function<void(Result, uint8_t*, uint32_t)> callback);
     void ReadAsyncPartial(char const* name,
-                          std::uint64_t offset,
-                          std::uint64_t length,
+                          uint64_t offset,
+                          uint64_t length,
                           std::function<void(Result, uint8_t*, uint32_t)> callback);
     Result Write(char const* name, uint8_t* data, uint32_t dataLength);
     void WriteAsync(char const* name,

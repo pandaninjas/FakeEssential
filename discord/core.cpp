@@ -9,7 +9,7 @@
 
 namespace discord {
 
-Result Core::Create(ClientId clientId, std::uint64_t flags, Core** instance)
+Result Core::Create(ClientId clientId, uint64_t flags, Core** instance)
 {
     if (!instance) {
         return Result::InternalError;

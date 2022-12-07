@@ -617,22 +617,22 @@ char const* FileStat::GetFilename() const
     return internal_.filename;
 }
 
-void FileStat::SetSize(std::uint64_t size)
+void FileStat::SetSize(uint64_t size)
 {
     internal_.size = size;
 }
 
-std::uint64_t FileStat::GetSize() const
+uint64_t FileStat::GetSize() const
 {
     return internal_.size;
 }
 
-void FileStat::SetLastModified(std::uint64_t lastModified)
+void FileStat::SetLastModified(uint64_t lastModified)
 {
     internal_.last_modified = lastModified;
 }
 
-std::uint64_t FileStat::GetLastModified() const
+uint64_t FileStat::GetLastModified() const
 {
     return internal_.last_modified;
 }
