@@ -76,7 +76,7 @@ Result ActivityManager::RegisterCommand(char const* command)
     return static_cast<Result>(result);
 }
 
-Result ActivityManager::RegisterSteam(std::uint32_t steamId)
+Result ActivityManager::RegisterSteam(uint32_t steamId)
 {
     auto result = internal_->register_steam(internal_, steamId);
     return static_cast<Result>(result);

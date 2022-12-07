@@ -12,9 +12,9 @@
 namespace discord {
 
 Result StorageManager::Read(char const* name,
-                            std::uint8_t* data,
-                            std::uint32_t dataLength,
-                            std::uint32_t* read)
+                            uint8_t* data,
+                            uint32_t dataLength,
+                            uint32_t* read)
 {
     if (!read) {
         return Result::InternalError;
@@ -29,20 +29,20 @@ Result StorageManager::Read(char const* name,
 }
 
 void StorageManager::ReadAsync(char const* name,
-                               std::function<void(Result, std::uint8_t*, std::uint32_t)> callback)
+                               std::function<void(Result, uint8_t*, uint32_t)> callback)
 {
     static auto wrapper =
       [](void* callbackData, EDiscordResult result, uint8_t* data, uint32_t dataLength) -> void {
-        std::unique_ptr<std::function<void(Result, std::uint8_t*, std::uint32_t)>> cb(
-          reinterpret_cast<std::function<void(Result, std::uint8_t*, std::uint32_t)>*>(
+        std::unique_ptr<std::function<void(Result, uint8_t*, uint32_t)>> cb(
+          reinterpret_cast<std::function<void(Result, uint8_t*, uint32_t)>*>(
             callbackData));
         if (!cb || !(*cb)) {
             return;
         }
         (*cb)(static_cast<Result>(result), data, dataLength);
     };
-    std::unique_ptr<std::function<void(Result, std::uint8_t*, std::uint32_t)>> cb{};
-    cb.reset(new std::function<void(Result, std::uint8_t*, std::uint32_t)>(std::move(callback)));
+    std::unique_ptr<std::function<void(Result, uint8_t*, uint32_t)>> cb{};
+    cb.reset(new std::function<void(Result, uint8_t*, uint32_t)>(std::move(callback)));
     internal_->read_async(internal_, const_cast<char*>(name), cb.release(), wrapper);
 }
 
@@ -50,25 +50,25 @@ void StorageManager::ReadAsyncPartial(
   char const* name,
   std::uint64_t offset,
   std::uint64_t length,
-  std::function<void(Result, std::uint8_t*, std::uint32_t)> callback)
+  std::function<void(Result, uint8_t*, uint32_t)> callback)
 {
     static auto wrapper =
       [](void* callbackData, EDiscordResult result, uint8_t* data, uint32_t dataLength) -> void {
-        std::unique_ptr<std::function<void(Result, std::uint8_t*, std::uint32_t)>> cb(
-          reinterpret_cast<std::function<void(Result, std::uint8_t*, std::uint32_t)>*>(
+        std::unique_ptr<std::function<void(Result, uint8_t*, uint32_t)>> cb(
+          reinterpret_cast<std::function<void(Result, uint8_t*, uint32_t)>*>(
             callbackData));
         if (!cb || !(*cb)) {
             return;
         }
         (*cb)(static_cast<Result>(result), data, dataLength);
     };
-    std::unique_ptr<std::function<void(Result, std::uint8_t*, std::uint32_t)>> cb{};
-    cb.reset(new std::function<void(Result, std::uint8_t*, std::uint32_t)>(std::move(callback)));
+    std::unique_ptr<std::function<void(Result, uint8_t*, uint32_t)>> cb{};
+    cb.reset(new std::function<void(Result, uint8_t*, uint32_t)>(std::move(callback)));
     internal_->read_async_partial(
       internal_, const_cast<char*>(name), offset, length, cb.release(), wrapper);
 }
 
-Result StorageManager::Write(char const* name, std::uint8_t* data, std::uint32_t dataLength)
+Result StorageManager::Write(char const* name, uint8_t* data, uint32_t dataLength)
 {
     auto result = internal_->write(
       internal_, const_cast<char*>(name), reinterpret_cast<uint8_t*>(data), dataLength);
@@ -76,8 +76,8 @@ Result StorageManager::Write(char const* name, std::uint8_t* data, std::uint32_t
 }
 
 void StorageManager::WriteAsync(char const* name,
-                                std::uint8_t* data,
-                                std::uint32_t dataLength,
+                                uint8_t* data,
+                                uint32_t dataLength,
                                 std::function<void(Result)> callback)
 {
     static auto wrapper = [](void* callbackData, EDiscordResult result) -> void {
@@ -115,7 +115,7 @@ Result StorageManager::Exists(char const* name, bool* exists)
     return static_cast<Result>(result);
 }
 
-void StorageManager::Count(std::int32_t* count)
+void StorageManager::Count(int32_t* count)
 {
     if (!count) {
         return;
@@ -135,7 +135,7 @@ Result StorageManager::Stat(char const* name, FileStat* stat)
     return static_cast<Result>(result);
 }
 
-Result StorageManager::StatAt(std::int32_t index, FileStat* stat)
+Result StorageManager::StatAt(int32_t index, FileStat* stat)
 {
     if (!stat) {
         return Result::InternalError;

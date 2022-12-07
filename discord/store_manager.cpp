@@ -58,7 +58,7 @@ void StoreManager::FetchSkus(std::function<void(Result)> callback)
     internal_->fetch_skus(internal_, cb.release(), wrapper);
 }
 
-void StoreManager::CountSkus(std::int32_t* count)
+void StoreManager::CountSkus(int32_t* count)
 {
     if (!count) {
         return;
@@ -77,7 +77,7 @@ Result StoreManager::GetSku(Snowflake skuId, Sku* sku)
     return static_cast<Result>(result);
 }
 
-Result StoreManager::GetSkuAt(std::int32_t index, Sku* sku)
+Result StoreManager::GetSkuAt(int32_t index, Sku* sku)
 {
     if (!sku) {
         return Result::InternalError;
@@ -102,7 +102,7 @@ void StoreManager::FetchEntitlements(std::function<void(Result)> callback)
     internal_->fetch_entitlements(internal_, cb.release(), wrapper);
 }
 
-void StoreManager::CountEntitlements(std::int32_t* count)
+void StoreManager::CountEntitlements(int32_t* count)
 {
     if (!count) {
         return;
@@ -122,7 +122,7 @@ Result StoreManager::GetEntitlement(Snowflake entitlementId, Entitlement* entitl
     return static_cast<Result>(result);
 }
 
-Result StoreManager::GetEntitlementAt(std::int32_t index, Entitlement* entitlement)
+Result StoreManager::GetEntitlementAt(int32_t index, Entitlement* entitlement)
 {
     if (!entitlement) {
         return Result::InternalError;

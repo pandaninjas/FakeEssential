@@ -139,17 +139,17 @@ void OverlayManager::CharEvent(char const* character)
     internal_->char_event(internal_, const_cast<char*>(character));
 }
 
-void OverlayManager::MouseButtonEvent(std::uint8_t down,
-                                      std::int32_t clickCount,
+void OverlayManager::MouseButtonEvent(uint8_t down,
+                                      int32_t clickCount,
                                       MouseButton which,
-                                      std::int32_t x,
-                                      std::int32_t y)
+                                      int32_t x,
+                                      int32_t y)
 {
     internal_->mouse_button_event(
       internal_, down, clickCount, static_cast<EDiscordMouseButton>(which), x, y);
 }
 
-void OverlayManager::MouseMotionEvent(std::int32_t x, std::int32_t y)
+void OverlayManager::MouseMotionEvent(int32_t x, std::int32_t y)
 {
     internal_->mouse_motion_event(internal_, x, y);
 }
@@ -161,9 +161,9 @@ void OverlayManager::ImeCommitText(char const* text)
 
 void OverlayManager::ImeSetComposition(char const* text,
                                        ImeUnderline* underlines,
-                                       std::uint32_t underlinesLength,
-                                       std::int32_t from,
-                                       std::int32_t to)
+                                       uint32_t underlinesLength,
+                                       int32_t from,
+                                       int32_t to)
 {
     internal_->ime_set_composition(internal_,
                                    const_cast<char*>(text),
@@ -179,7 +179,7 @@ void OverlayManager::ImeCancelComposition()
 }
 
 void OverlayManager::SetImeCompositionRangeCallback(
-  std::function<void(std::int32_t, std::int32_t, Rect*, std::uint32_t)>
+  std::function<void(int32_t, std::int32_t, Rect*, uint32_t)>
     onImeCompositionRangeChanged)
 {
     static auto wrapper = [](void* callbackData,
@@ -187,16 +187,16 @@ void OverlayManager::SetImeCompositionRangeCallback(
                              int32_t to,
                              DiscordRect* bounds,
                              uint32_t boundsLength) -> void {
-        std::unique_ptr<std::function<void(std::int32_t, std::int32_t, Rect*, std::uint32_t)>> cb(
-          reinterpret_cast<std::function<void(std::int32_t, std::int32_t, Rect*, std::uint32_t)>*>(
+        std::unique_ptr<std::function<void(int32_t, std::int32_t, Rect*, uint32_t)>> cb(
+          reinterpret_cast<std::function<void(int32_t, std::int32_t, Rect*, uint32_t)>*>(
             callbackData));
         if (!cb || !(*cb)) {
             return;
         }
         (*cb)(from, to, reinterpret_cast<Rect*>(bounds), boundsLength);
     };
-    std::unique_ptr<std::function<void(std::int32_t, std::int32_t, Rect*, std::uint32_t)>> cb{};
-    cb.reset(new std::function<void(std::int32_t, std::int32_t, Rect*, std::uint32_t)>(
+    std::unique_ptr<std::function<void(int32_t, std::int32_t, Rect*, uint32_t)>> cb{};
+    cb.reset(new std::function<void(int32_t, std::int32_t, Rect*, uint32_t)>(
       std::move(onImeCompositionRangeChanged)));
     internal_->set_ime_composition_range_callback(internal_, cb.release(), wrapper);
 }
@@ -220,7 +220,7 @@ void OverlayManager::SetImeSelectionBoundsCallback(
     internal_->set_ime_selection_bounds_callback(internal_, cb.release(), wrapper);
 }
 
-bool OverlayManager::IsPointInsideClickZone(std::int32_t x, std::int32_t y)
+bool OverlayManager::IsPointInsideClickZone(int32_t x, std::int32_t y)
 {
     auto result = internal_->is_point_inside_click_zone(internal_, x, y);
     return (result != 0);

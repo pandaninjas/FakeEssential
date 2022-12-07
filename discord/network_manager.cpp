@@ -92,8 +92,8 @@ Result NetworkManager::CloseChannel(NetworkPeerId peerId, NetworkChannelId chann
 
 Result NetworkManager::SendMessage(NetworkPeerId peerId,
                                    NetworkChannelId channelId,
-                                   std::uint8_t* data,
-                                   std::uint32_t dataLength)
+                                   uint8_t* data,
+                                   uint32_t dataLength)
 {
     auto result = internal_->send_message(
       internal_, peerId, channelId, reinterpret_cast<uint8_t*>(data), dataLength);

@@ -19,25 +19,25 @@ public:
     void ForwardMessage(MSG* message);
     void KeyEvent(bool down, char const* keyCode, KeyVariant variant);
     void CharEvent(char const* character);
-    void MouseButtonEvent(std::uint8_t down,
-                          std::int32_t clickCount,
+    void MouseButtonEvent(uint8_t down,
+                          int32_t clickCount,
                           MouseButton which,
-                          std::int32_t x,
-                          std::int32_t y);
-    void MouseMotionEvent(std::int32_t x, std::int32_t y);
+                          int32_t x,
+                          int32_t y);
+    void MouseMotionEvent(int32_t x, std::int32_t y);
     void ImeCommitText(char const* text);
     void ImeSetComposition(char const* text,
                            ImeUnderline* underlines,
-                           std::uint32_t underlinesLength,
-                           std::int32_t from,
-                           std::int32_t to);
+                           uint32_t underlinesLength,
+                           int32_t from,
+                           int32_t to);
     void ImeCancelComposition();
     void SetImeCompositionRangeCallback(
-      std::function<void(std::int32_t, std::int32_t, Rect*, std::uint32_t)>
+      std::function<void(int32_t, std::int32_t, Rect*, uint32_t)>
         onImeCompositionRangeChanged);
     void SetImeSelectionBoundsCallback(
       std::function<void(Rect, Rect, bool)> onImeSelectionBoundsChanged);
-    bool IsPointInsideClickZone(std::int32_t x, std::int32_t y);
+    bool IsPointInsideClickZone(int32_t x, std::int32_t y);
 
     Event<bool> OnToggle;
 

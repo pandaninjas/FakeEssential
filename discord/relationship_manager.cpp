@@ -56,7 +56,7 @@ void RelationshipManager::Filter(std::function<bool(Relationship const&)> filter
     internal_->filter(internal_, cb.get(), wrapper);
 }
 
-Result RelationshipManager::Count(std::int32_t* count)
+Result RelationshipManager::Count(int32_t* count)
 {
     if (!count) {
         return Result::InternalError;
@@ -77,7 +77,7 @@ Result RelationshipManager::Get(UserId userId, Relationship* relationship)
     return static_cast<Result>(result);
 }
 
-Result RelationshipManager::GetAt(std::uint32_t index, Relationship* relationship)
+Result RelationshipManager::GetAt(uint32_t index, Relationship* relationship)
 {
     if (!relationship) {
         return Result::InternalError;

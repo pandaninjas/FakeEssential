@@ -301,7 +301,7 @@ Result LobbyManager::GetLobbyMetadataValue(LobbyId lobbyId, MetadataKey key, cha
     return static_cast<Result>(result);
 }
 
-Result LobbyManager::GetLobbyMetadataKey(LobbyId lobbyId, std::int32_t index, char key[256])
+Result LobbyManager::GetLobbyMetadataKey(LobbyId lobbyId, int32_t index, char key[256])
 {
     if (!key) {
         return Result::InternalError;
@@ -312,7 +312,7 @@ Result LobbyManager::GetLobbyMetadataKey(LobbyId lobbyId, std::int32_t index, ch
     return static_cast<Result>(result);
 }
 
-Result LobbyManager::LobbyMetadataCount(LobbyId lobbyId, std::int32_t* count)
+Result LobbyManager::LobbyMetadataCount(LobbyId lobbyId, int32_t* count)
 {
     if (!count) {
         return Result::InternalError;
@@ -323,7 +323,7 @@ Result LobbyManager::LobbyMetadataCount(LobbyId lobbyId, std::int32_t* count)
     return static_cast<Result>(result);
 }
 
-Result LobbyManager::MemberCount(LobbyId lobbyId, std::int32_t* count)
+Result LobbyManager::MemberCount(LobbyId lobbyId, int32_t* count)
 {
     if (!count) {
         return Result::InternalError;
@@ -333,7 +333,7 @@ Result LobbyManager::MemberCount(LobbyId lobbyId, std::int32_t* count)
     return static_cast<Result>(result);
 }
 
-Result LobbyManager::GetMemberUserId(LobbyId lobbyId, std::int32_t index, UserId* userId)
+Result LobbyManager::GetMemberUserId(LobbyId lobbyId, int32_t index, UserId* userId)
 {
     if (!userId) {
         return Result::InternalError;
@@ -375,7 +375,7 @@ Result LobbyManager::GetMemberMetadataValue(LobbyId lobbyId,
 
 Result LobbyManager::GetMemberMetadataKey(LobbyId lobbyId,
                                           UserId userId,
-                                          std::int32_t index,
+                                          int32_t index,
                                           char key[256])
 {
     if (!key) {
@@ -387,7 +387,7 @@ Result LobbyManager::GetMemberMetadataKey(LobbyId lobbyId,
     return static_cast<Result>(result);
 }
 
-Result LobbyManager::MemberMetadataCount(LobbyId lobbyId, UserId userId, std::int32_t* count)
+Result LobbyManager::MemberMetadataCount(LobbyId lobbyId, UserId userId, int32_t* count)
 {
     if (!count) {
         return Result::InternalError;
@@ -422,8 +422,8 @@ void LobbyManager::UpdateMember(LobbyId lobbyId,
 }
 
 void LobbyManager::SendLobbyMessage(LobbyId lobbyId,
-                                    std::uint8_t* data,
-                                    std::uint32_t dataLength,
+                                    uint8_t* data,
+                                    uint32_t dataLength,
                                     std::function<void(Result)> callback)
 {
     static auto wrapper = [](void* callbackData, EDiscordResult result) -> void {
@@ -466,7 +466,7 @@ void LobbyManager::Search(LobbySearchQuery const& query, std::function<void(Resu
       internal_, const_cast<LobbySearchQuery&>(query).Internal(), cb.release(), wrapper);
 }
 
-void LobbyManager::LobbyCount(std::int32_t* count)
+void LobbyManager::LobbyCount(int32_t* count)
 {
     if (!count) {
         return;
@@ -475,7 +475,7 @@ void LobbyManager::LobbyCount(std::int32_t* count)
     internal_->lobby_count(internal_, reinterpret_cast<int32_t*>(count));
 }
 
-Result LobbyManager::GetLobbyId(std::int32_t index, LobbyId* lobbyId)
+Result LobbyManager::GetLobbyId(int32_t index, LobbyId* lobbyId)
 {
     if (!lobbyId) {
         return Result::InternalError;
@@ -533,7 +533,7 @@ Result LobbyManager::FlushNetwork()
     return static_cast<Result>(result);
 }
 
-Result LobbyManager::OpenNetworkChannel(LobbyId lobbyId, std::uint8_t channelId, bool reliable)
+Result LobbyManager::OpenNetworkChannel(LobbyId lobbyId, uint8_t channelId, bool reliable)
 {
     auto result =
       internal_->open_network_channel(internal_, lobbyId, channelId, (reliable ? 1 : 0));
@@ -542,9 +542,9 @@ Result LobbyManager::OpenNetworkChannel(LobbyId lobbyId, std::uint8_t channelId,
 
 Result LobbyManager::SendNetworkMessage(LobbyId lobbyId,
                                         UserId userId,
-                                        std::uint8_t channelId,
-                                        std::uint8_t* data,
-                                        std::uint32_t dataLength)
+                                        uint8_t channelId,
+                                        uint8_t* data,
+                                        uint32_t dataLength)
 {
     auto result = internal_->send_network_message(
       internal_, lobbyId, userId, channelId, reinterpret_cast<uint8_t*>(data), dataLength);
