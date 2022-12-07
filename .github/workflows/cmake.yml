@@ -25,11 +25,28 @@ jobs:
     - name: Install dependencies (Ubuntu)
       run: sudo apt-get install -y libcurl4-openssl-dev
       if: runner.os == 'Linux'
-    - name: Configure CMake
+    
+    - name: Install vcpkg (Windows))
+      run: git clone https://github.com/Microsoft/vcpkg.git && .\vcpkg\bootstrap-vcpkg.bat
+      if: runner.os == 'Windows'
+      
+    - name: Install depdencies (Windows)
+      run: vcpkg install curl
+      if: runner.os == 'Windows'
+      
+    - name: Configure CMake (Non-Windows)
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
+      if: runner.os != 'Windows'
+      
+    
+    - name: Configure CMake (Windows)
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=.\vcpkg\scripts\buildsystems\vcpkg.cmake 
+      if: runner.os == 'Windows'
+    
     - name: Build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
