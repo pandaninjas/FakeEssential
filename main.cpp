@@ -9,8 +9,12 @@
 volatile bool interrupted = false;
 
 int main(int argc, char ** argv) {
-    if (argc == 1) {
-        std::cout << "Usage: " << split_and_get_last(argv[0], path_separator) << " " << "--inessential [--server [server name]] [--version [version string]]\n";
+    PositionalArg username_arg = get(argv, argc, "--username");
+    std::string username;
+    if (username_arg.result == ArgParseResult::OK) {
+        username = username_arg.value;
+    } else {
+        std::cout << "Usage: " << split_and_get_last(argv[0], path_separator) << " --username [USERNAME] --inessential [--server [server name]] [--version [version string]]\n";
         return 1;
     }
 
@@ -22,6 +26,7 @@ int main(int argc, char ** argv) {
         different_server = true;
     } else if (server.result == ArgParseResult::NEEDS_ARG) {
         std::cout << "--server requires an argument\n";
+        std::exit(1);
     }
 
     PositionalArg version = get(argv, argc, "--version");
@@ -32,9 +37,9 @@ int main(int argc, char ** argv) {
         different_version = true;
     } else if (server.result == ArgParseResult::NEEDS_ARG) {
         std::cout << "--version requires an argument\n";
+        std::exit(1);
     }
 
-    std::string username = argv[1];
     std::string uuid = get_uuid(username);
     std::string link = "https://crafatar.com/avatars/" + uuid;
     discord::Core* core{};

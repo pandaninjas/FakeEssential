@@ -43,7 +43,6 @@ std::string get_uuid(const std::string& username) {
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &http_response);
     }
     curl_easy_perform(curl);
-    std::cout << http_response << "\n";
     nlohmann::json api_response = nlohmann::json::parse(http_response);
     curl_easy_cleanup(curl);
     return api_response["id"].get<std::string>();
