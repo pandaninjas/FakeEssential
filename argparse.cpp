@@ -24,7 +24,7 @@ PositionalArg PositionalArg::create(std::string basicString, ArgParseResult apr)
 
 bool has(char ** in, int argc, const char * tofind) {
     for (int i = 0; i < argc; i++) {
-        if (strcmp(in[i],tofind) != 0) {
+        if (strcmp(in[i],tofind) == 0) {
             return true;
         }
     }

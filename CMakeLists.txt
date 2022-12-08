@@ -33,20 +33,26 @@ add_executable(fake_essential
 
 target_link_libraries( fake_essential PRIVATE CURL::libcurl discord_game_sdk)
 
-set(
-        ZIP_SRC
-        "${CMAKE_SOURCE_DIR}/lib/discord_game_sdk.dll"
-        "${CMAKE_BINARY_DIR}/fake_essential.exe"
-        "${CMAKE_BINARY_DIR}/libcurl-d.dll"
-        "${CMAKE_BINARY_DIR}/zlibd1.dll"
-)
 IF(WIN32)
-  add_custom_target(create_zip COMMAND
-          ${CMAKE_COMMAND} -E tar "cfv" "${CMAKE_BINARY_DIR}/fake_essential.zip" --format=zip
-          "${CMAKE_BINARY_DIR}/fake_essential.exe"
-          "${CMAKE_BINARY_DIR}/libcurl-d.dll"
-          "${CMAKE_BINARY_DIR}/zlibd1.dll"
-          discord_game_sdk
-          DEPENDS fake_essential discord_game_sdk)
-  add_custom_target("build-zip" ALL DEPENDS "${CMAKE_BINARY_DIR}/fake_essential.zip")
+  if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+    configure_file("${CMAKE_SOURCE_DIR}/lib/discord_game_sdk.dll" "${CMAKE_BINARY_DIR}/Release/discord_game_sdk.dll" COPYONLY)
+    add_custom_target(create_zip COMMAND
+            ${CMAKE_COMMAND} -E tar "cfv" "${CMAKE_BINARY_DIR}/fake_essential.zip" --format=zip
+            "${CMAKE_BINARY_DIR}/Release/fake_essential.exe"
+            "${CMAKE_BINARY_DIR}/Release/libcurl.dll"
+            "${CMAKE_BINARY_DIR}/Release/zlib1.dll"
+            "${CMAKE_BINARY_DIR}/Release/discord_game_sdk.dll"
+            DEPENDS fake_essential discord_game_sdk)
+  else()
+    configure_file("${CMAKE_SOURCE_DIR}/lib/discord_game_sdk.dll" "${CMAKE_BINARY_DIR}/Debug/discord_game_sdk.dll" COPYONLY)
+    add_custom_target(create_zip COMMAND
+            ${CMAKE_COMMAND} -E tar  "cfv" "${CMAKE_BINARY_DIR}/fake_essential.zip" --format=zip
+            "${CMAKE_BINARY_DIR}/Debug/fake_essential.exe"
+            "${CMAKE_BINARY_DIR}/Debug/libcurl-d.dll"
+            "${CMAKE_BINARY_DIR}/Debug/zlibd1.dll"
+            "${CMAKE_BINARY_DIR}/Debug/discord_game_sdk.dll"
+            DEPENDS fake_essential discord_game_sdk)
+  endif()
+
+  add_custom_target("build-zip" ALL DEPENDS create_zip)
 ENDIF()
