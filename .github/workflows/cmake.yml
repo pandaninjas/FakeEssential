@@ -63,13 +63,15 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     
 
-    - uses: actions/upload-artifact@v3 (Not Windows)
+    - uses: actions/upload-artifact@v3
+      name: Upload artifact (Not Windows)
       with:
         name: fake_essentials
         path: ${{github.workspace}}/build/fake_essential
       if: runner.os != 'Windows'
 
-    - uses: actions/upload-artifact@v3 (Windows)
+    - uses: actions/upload-artifact@v3
+      name: Upload artifact (Windows)
       with:
         name: fake_essentials
         path: ${{github.workspace}}/build/fake_essential.zip
