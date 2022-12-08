@@ -64,5 +64,5 @@ jobs:
       name: Upload artifact (Windows)
       with:
         name: fake_essential.zip
-        path: ${{github.workspace}}/build/fake_essential.zip
+        path: ${{github.workspace}}/build/Release/*
       if: runner.os == 'Windows'
