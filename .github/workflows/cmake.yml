@@ -26,12 +26,8 @@ jobs:
       run: sudo apt-get install -y libcurl4-openssl-dev
       if: runner.os == 'Linux'
     
-    - name: Install vcpkg (Windows)
-      run: git clone https://github.com/Microsoft/vcpkg.git && .\vcpkg\bootstrap-vcpkg.bat
-      if: runner.os == 'Windows'
-
     - name: Install depdencies (Windows)
-      run: vcpkg install --triplet x64-windows curl
+      run: vcpkg.exe install --triplet x64-windows curl
       if: runner.os == 'Windows' && steps.restore-cache.outputs.cache-hit != 'true'
       
     - name: Configure CMake (Non-Windows)
@@ -55,13 +51,10 @@ jobs:
     - uses: actions/upload-artifact@v3
       name: Upload artifact (Not Windows)
       with:
-        name: fake_essentials
+        name: fake_essential
         path: ${{github.workspace}}/build/fake_essential
       if: runner.os != 'Windows'
 
-    - uses: actions/upload-artifact@v3
-      name: Upload artifact (Windows)
-      with:
-        name: fake_essentials
-        path: ${{github.workspace}}/build/fake_essential.zip
+    - name: find the files (windows edition)
+      run: dir /S ${{github.workspace}}
       if: runner.os == 'Windows'
