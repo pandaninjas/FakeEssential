@@ -43,10 +43,15 @@ jobs:
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake 
       if: runner.os == 'Windows'
     
-    - name: Build
+    - name: Build (Not windows)
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      if: runner.os != 'Windows'
+      
+    - name: Build (Windows)
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target build-zip
-    
+      if: runner.os == 'Windows'
 
     - uses: actions/upload-artifact@v3
       name: Upload artifact (Not Windows)
