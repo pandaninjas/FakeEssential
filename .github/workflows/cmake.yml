@@ -27,18 +27,7 @@ jobs:
       if: runner.os == 'Linux'
     
     - name: Install vcpkg (Windows)
-      run: git clone https://github.com/Microsoft/vcpkg.git && .\vcpkg\bootstrap-vcpkg.bat && setx VCPKG_DEFAULT_BINARY_CACHE C:\Cache /m
-      if: runner.os == 'Windows'
-    
-    - name: Cache (Windows)
-      id: restore-cache
-      uses: actions/cache@v2
-      with:
-        path: |
-          ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
-        key: ${{ runner.os }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}
-        restore-keys: |
-          ${{ runner.os }}-${{ env.BUILD_TYPE }}
+      run: git clone https://github.com/Microsoft/vcpkg.git && .\vcpkg\bootstrap-vcpkg.bat
       if: runner.os == 'Windows'
 
     - name: Install depdencies (Windows)
