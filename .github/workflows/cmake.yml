@@ -26,16 +26,14 @@ jobs:
       run: sudo apt-get install -y libcurl4-openssl-dev
       if: runner.os == 'Linux'
     
-    - name: Install vcpkg (Windows))
+    - name: Install vcpkg (Windows)
       run: git clone https://github.com/Microsoft/vcpkg.git && .\vcpkg\bootstrap-vcpkg.bat
       if: runner.os == 'Windows'
     
-    - name: Cache
+    - name: Cache (Windows only)
       id: restore-cache
       uses: actions/cache@v2
       with:
-        # Assuming that vcpkg is installed in `~/vcpkg`
-        # Assuming that the build directory is `./build`
         path: |
           ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
           ${{ env.LOCALAPPDATA }}\vcpkg\archives
@@ -43,7 +41,8 @@ jobs:
         key: ${{ runner.os }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}
         restore-keys: |
           ${{ runner.os }}-${{ env.BUILD_TYPE }}
-          
+      if: runner.os == 'Windows'
+
     - name: Install depdencies (Windows)
       run: vcpkg install --triplet x64-windows curl
       if: runner.os == 'Windows' && steps.restore-cache.outputs.cache-hit != 'true'

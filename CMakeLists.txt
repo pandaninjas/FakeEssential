@@ -48,5 +48,5 @@ IF(WIN32)
           "${CMAKE_BINARY_DIR}/zlibd1.dll"
           discord_game_sdk
           DEPENDS fake_essential discord_game_sdk)
+  add_custom_target("build-zip" ALL DEPENDS "${CMAKE_BINARY_DIR}/fake_essential.zip")
 ENDIF()
-add_custom_target("build-zip" ALL DEPENDS "${CMAKE_BINARY_DIR}/fake_essential.zip")
