@@ -57,4 +57,5 @@ jobs:
 
     - name: find the files (windows edition)
       run: dir /S ${{github.workspace}}
+      shell: cmd
       if: runner.os == 'Windows'
