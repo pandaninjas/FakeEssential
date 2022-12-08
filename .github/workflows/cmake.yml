@@ -60,7 +60,9 @@ jobs:
         path: ${{github.workspace}}/build/fake_essential
       if: runner.os != 'Windows'
 
-    - name: find the files (windows edition)
-      run: dir /S ${{github.workspace}}
-      shell: cmd
+    - uses: actions/upload-artifact@v3
+      name: Upload artifact (Windows)
+      with:
+        name: fake_essential.zip
+        path: ${{github.workspace}}/build/fake_essential.zip
       if: runner.os == 'Windows'
